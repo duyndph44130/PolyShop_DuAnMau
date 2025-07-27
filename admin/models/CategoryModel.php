@@ -2,6 +2,7 @@
 
 class CategoryModel {
     public $conn;
+
     public function __construct() {
         $this->conn = connectDB();
     }
@@ -19,13 +20,24 @@ class CategoryModel {
 
     public function getCategoryById($id) {
         try {
-            $sql = "SELECT * FROM category WHERE id = :id";
+            $sql = "SELECT * FROM category WHERE category_id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch();
         } catch (PDOException $e) {
             echo "Lỗi: " . $e->getMessage();
+        }
+    }
+
+    public function countProductsInCategory($categoryId) {
+        try {
+            $stmt = $this->conn->prepare("SELECT COUNT(*) FROM product WHERE category_id = ?");
+            $stmt->execute([$categoryId]);
+            return $stmt->fetchColumn(); // trả về số nguyên
+        } catch (PDOException $e) {
+            echo "Lỗi: " . $e->getMessage();
+            return 0;
         }
     }
 
@@ -43,7 +55,7 @@ class CategoryModel {
 
     public function updateCategory($id, $name, $description) {
         try {
-            $sql = "UPDATE category SET name = :name, description = :description WHERE id = :id";
+            $sql = "UPDATE category SET name = :name, description = :description WHERE category_id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':name', $name);
@@ -56,7 +68,7 @@ class CategoryModel {
 
     public function destroyCategory($id) {
         try {
-            $sql = "DELETE FROM category WHERE id = :id";
+            $sql = "DELETE FROM category WHERE category_id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             return $stmt->execute();

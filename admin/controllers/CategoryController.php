@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 class CategoryController {
     public $modelCategory;
 
@@ -18,8 +17,9 @@ class CategoryController {
     public function detail($id) {
         // Lấy thông tin chi tiết danh mục từ model
         $category = $this->modelCategory->getCategoryById($id);
+        $productCount = $this->modelCategory->countProductsInCategory($id); // mới
 
-        require_once './views/categories/detail.php';
+        require_once './views/categories/show.php';
     }
 
     public function add() {
