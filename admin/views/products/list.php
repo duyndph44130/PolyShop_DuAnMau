@@ -18,7 +18,7 @@
             max-width: 80px;
             height: auto;
         }
-        .actions a {
+        .acts a {
             margin-right: 10px;
         }
     </style>
@@ -26,7 +26,7 @@
 <body>
     <h1>Danh sách sản phẩm</h1>
 
-    <a href="index.php?act=/product/add">➕ Thêm sản phẩm</a>
+    <a href="?act=/product/add">➕ Thêm sản phẩm</a>
 
     <table>
         <thead>
@@ -54,10 +54,10 @@
                                 Không có ảnh
                             <?php endif; ?>
                         </td>
-                        <td class="actions">
-                            <a href="index.php?act=/product/detail&id=<?= $product['product_id'] ?>">Chi tiết</a>
-                            <a href="index.php?act=/product/edit&id=<?= $product['product_id'] ?>">Sửa</a>
-                            <a href="index.php?act=/product/delete&id=<?= $product['product_id'] ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                        <td class="acts">
+                            <a href="?act=/product/detail&id=<?= $product['product_id'] ?>">Chi tiết</a>
+                            <a href="?act=/product/edit&id=<?= $product['product_id'] ?>">Sửa</a>
+                            <a href="?act=/product/delete&id=<?= $product['product_id'] ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

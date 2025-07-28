@@ -21,7 +21,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="" method="post">
+    <form act="" method="post">
         <label for="name">Tên danh mục:</label>
         <input type="text" id="name" name="name" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
 
@@ -30,7 +30,7 @@
 
         <br><br>
         <button type="submit">Thêm</button>
-        <a href="index.php?act=/categories">Quay lại danh sách</a>
+        <a href="?act=/categories">Quay lại danh sách</a>
     </form>
 </body>
 </html>

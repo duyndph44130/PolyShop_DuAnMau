@@ -22,7 +22,7 @@
             <p><span class="label">Số lượng sản phẩm trong danh mục:</span> <?= $productCount ?></p>
         </div>
 
-        <a href="index.php?act=/categories">← Quay lại danh sách</a>
+        <a href="?act=/categories">← Quay lại danh sách</a>
     <?php endif; ?>
 </body>
 </html>

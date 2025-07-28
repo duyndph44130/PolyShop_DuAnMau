@@ -66,7 +66,7 @@ class ProductController {
 
             if (empty($errors)) {
                 if ($this->modelProduct->addProduct($name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id, $created_by)) {
-                    header('Location: index.php?act=/products');
+                    header('Location: ?act=/products');
                     exit;
                 } else {
                     $errors[] = "Lỗi khi thêm sản phẩm vào CSDL.";
@@ -125,7 +125,7 @@ class ProductController {
 
             if (empty($errors)) {
                 if ($this->modelProduct->updateProduct($id, $name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id)) {
-                    header('Location: index.php?act=/products');
+                    header('Location: ?act=/products');
                     exit;
                 } else {
                     $errors[] = "Lỗi khi cập nhật sản phẩm.";
@@ -138,7 +138,7 @@ class ProductController {
 
     public function delete($id) {
         if ($this->modelProduct->deleteProduct($id)) {
-            header('Location: index.php?act=/products');
+            header('Location: ?act=/products');
             exit;
         } else {
             echo "Lỗi khi xóa sản phẩm.";

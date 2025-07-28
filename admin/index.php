@@ -1,5 +1,7 @@
-<?php 
-// Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
+<?php
+// Bắt đầu phiên
+ob_start();
+session_start();
 
 // Require file Common
 require_once '../commons/env.php';
@@ -8,35 +10,65 @@ require_once '../commons/function.php';
 // Require toàn bộ file Controller
 require_once './controllers/CategoryController.php';
 require_once './controllers/ProductController.php';
+require_once './controllers/AuthController.php';
+require_once './controllers/UserController.php';
 
 // Require toàn bộ file Model
 require_once './models/CategoryModel.php';
 require_once './models/ProductModel.php';
+require_once './models/UserModel.php';
 
+// Định nghĩa các route yêu cầu quyền admin
+$adminRoutes = [
+    '/categories', '/category/add', '/category/edit', '/category/delete', '/category/detail',
+    '/products', '/product/add', '/product/edit', '/product/delete', '/product/detail',
+    '/users', '/user/add', '/user/edit', '/user/delete', '/user/detail'
+];
 
-// Route
+// Xác định hành động
 $act = $_GET['act'] ?? '/';
 
-$controller = new CategoryController();
+// Kiểm tra đăng nhập (trừ login & logout)
+if (!in_array($act, ['/login', '/logout']) && empty($_SESSION['user'])) {
+    header('Location: ?act=/login');
+    exit;
+}
 
+// Kiểm tra quyền admin
+if (in_array($act, $adminRoutes) && ($_SESSION['user']['role'] ?? '') !== 'admin') {
+    echo "❌ Bạn không có quyền truy cập trang này!";
+    exit;
+}
+
+// Định tuyến
 match ($act) {
-    '/' => $controller->list(),
+    '/' => (new CategoryController())->list(),
 
-    // Route category
-    '/categories' => $controller->list(),
-    '/category/add' => $controller->add(),
-    '/category/edit' => $controller->edit($_GET['id'] ?? null),
-    '/category/delete' => $controller->delete($_GET['id'] ?? null),
-    '/category/detail' => $controller->detail($_GET['id'] ?? null),
-    '/category/show' => $controller->detail($_GET['id'] ?? null),
+    // Category
+    '/categories' => (new CategoryController())->list(),
+    '/category/add' => (new CategoryController())->add(),
+    '/category/edit' => (new CategoryController())->edit($_GET['id'] ?? null),
+    '/category/delete' => (new CategoryController())->delete($_GET['id'] ?? null),
+    '/category/detail' => (new CategoryController())->detail($_GET['id'] ?? null),
 
-    // Route product
+    // Product
     '/products' => (new ProductController())->list(),
     '/product/add' => (new ProductController())->add(),
     '/product/edit' => (new ProductController())->edit($_GET['id'] ?? null),
     '/product/delete' => (new ProductController())->delete($_GET['id'] ?? null),
     '/product/detail' => (new ProductController())->detail($_GET['id'] ?? null),
 
+    // Auth
+    '/login' => (new AuthController())->login(),
+    '/logout' => (new AuthController())->logout(),
+
+    // User
+    '/users' => (new UserController())->list(),
+    '/user/add' => (new UserController())->add(),
+    '/user/edit' => (new UserController())->edit($_GET['id'] ?? null),
+    '/user/delete' => (new UserController())->delete($_GET['id'] ?? null),
+    '/user/detail' => (new UserController())->detail($_GET['id'] ?? null),
+
+    // 404 fallback
     default => http_response_code(404),
 };
-

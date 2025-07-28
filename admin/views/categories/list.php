@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Danh sách danh mục</h1>
-    <a href="index.php?act=/category/add">Thêm danh mục</a>
+    <a href="?act=/category/add">Thêm danh mục</a>
     <table>
         <thead>
             <tr>
@@ -25,9 +25,9 @@
                         <td><?= $category['name'] ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
-                            <a href="index.php?act=/category/show&id=<?= $category['category_id'] ?>">Xem</a> |
-                            <a href="index.php?act=/category/edit&id=<?= $category['category_id'] ?>">Sửa</a> |
-                            <a href="index.php?act=/category/delete&id=<?= $category['category_id'] ?>" onclick="return confirm('Bạn có chắc muốn xóa không?')">Xóa</a>
+                            <a href="?act=/category/show&id=<?= $category['category_id'] ?>">Xem</a> |
+                            <a href="?act=/category/edit&id=<?= $category['category_id'] ?>">Sửa</a> |
+                            <a href="?act=/category/delete&id=<?= $category['category_id'] ?>" onclick="return confirm('Bạn có chắc muốn xóa không?')">Xóa</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -22,7 +22,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="" method="post" enctype="multipart/form-data">
+    <form act="" method="post" enctype="multipart/form-data">
         <label>Tên sản phẩm:
             <input type="text" name="name" value="<?= htmlspecialchars($_POST['name'] ?? $product['name']) ?>">
         </label>
@@ -67,7 +67,7 @@
 
         <br><br>
         <button type="submit">Cập nhật</button>
-        <a href="index.php?act=/products">Quay lại danh sách</a>
+        <a href="?act=/products">Quay lại danh sách</a>
     </form>
 </body>
 </html>

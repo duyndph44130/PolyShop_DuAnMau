@@ -41,7 +41,7 @@ class CategoryController {
             }
 
             if ($this->modelCategory->addCategory($name, $description)) {
-                header('Location: index.php?act=/categories');
+                header('Location: ?act=/categories');
             } else {
                 echo "Lỗi khi thêm danh mục.";
             }
@@ -57,7 +57,7 @@ class CategoryController {
             $description = $_POST['description'] ?? '';
 
             if ($this->modelCategory->updateCategory($id, $name, $description)) {
-                header('Location: index.php?act=/categories');
+                header('Location: ?act=/categories');
             } else {
                 echo "Lỗi khi cập nhật danh mục.";
             }
@@ -67,7 +67,7 @@ class CategoryController {
 
     public function delete($id) {
         if ($this->modelCategory->destroyCategory($id)) {
-            header('Location: index.php?act=/categories');
+            header('Location: ?act=/categories');
         } else {
             echo "Lỗi khi xóa danh mục.";
         }

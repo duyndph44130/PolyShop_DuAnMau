@@ -28,6 +28,6 @@
     <?php endif; ?>
 
     <br>
-    <a href="index.php?act=/products">← Quay lại danh sách</a>
+    <a href="?act=/products">← Quay lại danh sách</a>
 </body>
 </html>
