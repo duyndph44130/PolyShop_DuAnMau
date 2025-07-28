@@ -42,6 +42,7 @@ class CategoryController {
 
             if ($this->modelCategory->addCategory($name, $description)) {
                 header('Location: ?act=/categories');
+                exit;
             } else {
                 echo "Lỗi khi thêm danh mục.";
             }
@@ -58,6 +59,7 @@ class CategoryController {
 
             if ($this->modelCategory->updateCategory($id, $name, $description)) {
                 header('Location: ?act=/categories');
+                exit;
             } else {
                 echo "Lỗi khi cập nhật danh mục.";
             }
@@ -68,6 +70,7 @@ class CategoryController {
     public function delete($id) {
         if ($this->modelCategory->destroyCategory($id)) {
             header('Location: ?act=/categories');
+            exit;
         } else {
             echo "Lỗi khi xóa danh mục.";
         }

@@ -1,6 +1,5 @@
 <?php
 // Bắt đầu phiên
-ob_start();
 session_start();
 
 // Require file Common
@@ -12,11 +11,13 @@ require_once './controllers/CategoryController.php';
 require_once './controllers/ProductController.php';
 require_once './controllers/AuthController.php';
 require_once './controllers/UserController.php';
+require_once './controllers/CommentController.php';
 
 // Require toàn bộ file Model
 require_once './models/CategoryModel.php';
 require_once './models/ProductModel.php';
 require_once './models/UserModel.php';
+require_once './models/CommentModel.php';
 
 // Định nghĩa các route yêu cầu quyền admin
 $adminRoutes = [
@@ -35,10 +36,11 @@ if (!in_array($act, ['/login', '/logout']) && empty($_SESSION['user'])) {
 }
 
 // Kiểm tra quyền admin
-if (in_array($act, $adminRoutes) && ($_SESSION['user']['role'] ?? '') !== 'admin') {
+if (in_array($act, $adminRoutes) && (strtolower($_SESSION['user']['role'] ?? '') !== 'admin')) {
     echo "❌ Bạn không có quyền truy cập trang này!";
     exit;
 }
+
 
 // Định tuyến
 match ($act) {
@@ -61,6 +63,8 @@ match ($act) {
     // Auth
     '/login' => (new AuthController())->login(),
     '/logout' => (new AuthController())->logout(),
+    '/register' => (new AuthController())->register(),
+
 
     // User
     '/users' => (new UserController())->list(),
@@ -68,6 +72,14 @@ match ($act) {
     '/user/edit' => (new UserController())->edit($_GET['id'] ?? null),
     '/user/delete' => (new UserController())->delete($_GET['id'] ?? null),
     '/user/detail' => (new UserController())->detail($_GET['id'] ?? null),
+
+    // Comment
+    '/comments' => (new CommentController())->list(),
+    '/comment/add' => (new CommentController())->add(),
+    '/comment/delete' => (new CommentController())->delete($_GET['id'] ?? null),
+    '/comment/detail' => (new CommentController())->detail($_GET['id'] ?? null),
+    '/comment/edit' => (new CommentController())->updateStatus($_GET['id'] ?? null),
+
 
     // 404 fallback
     default => http_response_code(404),

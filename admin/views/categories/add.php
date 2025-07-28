@@ -21,7 +21,7 @@
         </div>
     <?php endif; ?>
 
-    <form act="" method="post">
+    <form action="?act=/category/add" method="post">
         <label for="name">Tên danh mục:</label>
         <input type="text" id="name" name="name" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
 

@@ -44,7 +44,7 @@ class UserModel {
             ");
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':password', $password); // Không mã hóa
             $stmt->bindParam(':phone', $phone);
             $stmt->bindParam(':address', $address);
             $stmt->bindParam(':role', $role);
@@ -64,7 +64,7 @@ class UserModel {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':password', $password); // Không mã hóa
             $stmt->bindParam(':phone', $phone);
             $stmt->bindParam(':address', $address);
             $stmt->bindParam(':role', $role);

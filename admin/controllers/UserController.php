@@ -58,8 +58,8 @@ class UserController {
             }
 
             if (empty($errors)) {
-                $hashed = password_hash($password, PASSWORD_DEFAULT);
-                if ($this->userModel->create($name, $email, $hashed, $phone, $address, $role)) {
+                // LƯU MẬT KHẨU THƯỜNG (không hash)
+                if ($this->userModel->create($name, $email, $password, $phone, $address, $role)) {
                     header('Location: ?act=/users');
                     exit;
                 } else {
@@ -96,8 +96,8 @@ class UserController {
             if (empty($address)) $errors[] = "Địa chỉ không được để trống.";
             if (empty($role)) $errors[] = "Vai trò không hợp lệ.";
 
-            // Mặc định giữ lại mật khẩu cũ nếu không đổi
-            $hashed = $user['password'];
+            // Nếu nhập mật khẩu mới thì dùng, không thì giữ nguyên
+            $newPassword = $user['password'];
             if (!empty($password)) {
                 if (strlen($password) < 6 || 
                     !preg_match('/[A-Z]/', $password) || 
@@ -105,12 +105,12 @@ class UserController {
                     !preg_match('/[0-9]/', $password)) {
                     $errors[] = "Mật khẩu mới phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số.";
                 } else {
-                    $hashed = password_hash($password, PASSWORD_DEFAULT);
+                    $newPassword = $password; // KHÔNG hash
                 }
             }
 
             if (empty($errors)) {
-                if ($this->userModel->update($id, $name, $email, $hashed, $phone, $address, $role)) {
+                if ($this->userModel->update($id, $name, $email, $newPassword, $phone, $address, $role)) {
                     header('Location: ?act=/users');
                     exit;
                 } else {
