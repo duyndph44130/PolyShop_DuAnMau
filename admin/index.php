@@ -12,12 +12,14 @@ require_once './controllers/ProductController.php';
 require_once './controllers/AuthController.php';
 require_once './controllers/UserController.php';
 require_once './controllers/CommentController.php';
+require_once './controllers/OrderController.php';
 
 // Require toàn bộ file Model
 require_once './models/CategoryModel.php';
 require_once './models/ProductModel.php';
 require_once './models/UserModel.php';
 require_once './models/CommentModel.php';
+require_once './models/OrderModel.php';
 
 // Định nghĩa các route yêu cầu quyền admin
 $adminRoutes = [
@@ -80,6 +82,10 @@ match ($act) {
     '/comment/detail' => (new CommentController())->detail($_GET['id'] ?? null),
     '/comment/edit' => (new CommentController())->updateStatus($_GET['id'] ?? null),
 
+    // Order
+    '/orders' => (new OrderController()) ->list(),
+    '/order/detail' => (new OrderController()) ->detail($_GET['id'] ?? null),
+    '/order/edit' => (new OrderController()) ->edit($_GET['id'] ?? null),    
 
     // 404 fallback
     default => http_response_code(404),

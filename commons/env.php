@@ -4,7 +4,7 @@
 // Biến môi trường, dùng chung toàn hệ thống
 // Khai báo dưới dạng Hàng số để không phải dùng $GLOBALS
 // define('BASE_URL', 'http://localhost/PolyShop_DuAnMau/');
-define('BASE_URL', 'http://localhost/PolyShop_DuAnMau/admin/');
+define('BASE_URL_ADMIN', 'http://localhost/PolyShop_DuAnMau/admin/');
 
 define('DB_HOST', 'localhost');
 define('DB_PORT', '3306');
