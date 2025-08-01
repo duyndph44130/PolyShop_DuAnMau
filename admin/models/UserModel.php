@@ -85,4 +85,21 @@ class UserModel {
             return false;
         }
     }
+
+public function searchUsers($keyword) {
+    try {
+        $sql = "SELECT * FROM user 
+                WHERE name LIKE :kw OR email LIKE :kw";
+        $stmt = $this->conn->prepare($sql);
+        $kw = '%' . $keyword . '%';
+        $stmt->bindParam(':kw', $kw);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        echo "Lỗi tìm kiếm: " . $e->getMessage();
+        return [];
+    }
+}
+
+
 }

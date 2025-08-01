@@ -107,4 +107,23 @@ class ProductModel {
             return false;
         }
     }
+
+    public function searchProducts($keyword) {
+        try {
+            $sql = "SELECT p.*, c.name AS category_name
+                    FROM product p
+                    LEFT JOIN category c ON p.category_id = c.category_id
+                    WHERE p.name LIKE :kw OR p.description LIKE :kw
+                    ORDER BY p.product_id DESC";
+            $stmt = $this->conn->prepare($sql);
+            $kw = '%' . $keyword . '%';
+            $stmt->bindParam(':kw', $kw);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            echo "Lỗi tìm kiếm sản phẩm: " . $e->getMessage();
+            return [];
+        }
+    }
+
 }

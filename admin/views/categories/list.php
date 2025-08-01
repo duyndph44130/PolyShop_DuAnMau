@@ -7,6 +7,19 @@
 </head>
 <body>
     <h1>Danh sách danh mục</h1>
+    
+    <form method="GET">
+        <input type="hidden" name="act" value="/categories">
+        <input type="text" name="keyword" placeholder="Tìm danh mục theo tên..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+        <button type="submit">Tìm kiếm</button>
+    </form>
+    <br>
+
+    <?php if (!empty($keyword)): ?>
+        <p>Đã tìm thấy <?= count($listCategories) ?> kết quả cho từ khóa: <strong><?= htmlspecialchars($keyword) ?></strong></p>
+    <?php endif; ?>
+    <br>
+    
     <a href="?act=/category/add">Thêm danh mục</a>
     <table>
         <thead>

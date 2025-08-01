@@ -8,6 +8,18 @@
 <body>
     <h1>Danh sách người dùng</h1>
     <a href="?act=/user/add">Thêm người dùng</a>
+    <form method="GET" action="">
+        <input type="hidden" name="act" value="/users">
+        <input type="text" name="keyword" placeholder="Tìm theo tên hoặc email..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+        <button type="submit">Tìm kiếm</button>
+    </form>
+    <br>
+
+    <?php if (!empty($keyword)): ?>
+        <p>Đã tìm thấy <?= count($listUsers) ?> kết quả cho từ khóa: <strong><?= htmlspecialchars($keyword) ?></strong></p>
+    <?php endif; ?>
+    <br>
+
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>

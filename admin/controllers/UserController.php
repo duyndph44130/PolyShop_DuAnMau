@@ -9,6 +9,15 @@ class UserController {
     // Lấy danh sách người dùng
     public function list() {
         $listUsers = $this->userModel->getAllUsers();
+
+        $keyword = $_GET['keyword'] ?? '';
+
+        if (!empty($keyword)) {
+            $listUsers = $this->userModel->searchUsers($keyword);
+        } else {
+            $listUsers = $this->userModel->getAllUsers();
+        }
+        
         require_once './views/users/list.php';
     }
 
@@ -130,6 +139,13 @@ class UserController {
             echo "Người dùng không tồn tại.";
             return;
         }
+
+        // Không thể xoá chính tài khoản đang dùng
+        if ($_SESSION['user']['user_id'] == $id) {
+            echo "Bạn không thể tự xóa chính mình!";
+            return;
+        }
+
 
         if ($this->userModel->delete($id)) {
             header('Location: ?act=/users');

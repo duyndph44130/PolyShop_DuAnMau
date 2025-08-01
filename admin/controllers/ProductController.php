@@ -11,6 +11,14 @@ class ProductController {
 
     public function list() {
         $listProducts = $this->modelProduct->getAllProducts();
+
+        $keyword = $_GET['keyword'] ?? '';
+        if (!empty($keyword)) {
+            $listProducts = $this->modelProduct->searchProducts($keyword);
+        } else {
+            $listProducts = $this->modelProduct->getAllProducts();
+        }
+
         require_once './views/products/list.php';
     }
 

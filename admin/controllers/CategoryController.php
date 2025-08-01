@@ -11,6 +11,14 @@ class CategoryController {
         // Lấy tất cả các danh mục từ model
         $listCategories = $this->modelCategory->getAllCategories();
 
+        $keyword = $_GET['keyword'] ?? '';
+
+        if (!empty($keyword)) {
+            $listCategories = $this->modelCategory->searchCategories($keyword);
+        } else {
+            $listCategories = $this->modelCategory->getAllCategories();
+        }
+
         require_once './views/categories/list.php';
     }
 

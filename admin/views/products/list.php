@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Danh sách sản phẩm</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #aaa;
-            padding: 8px;
-            text-align: left;
-        }
-        img {
-            max-width: 80px;
-            height: auto;
-        }
-        .acts a {
-            margin-right: 10px;
-        }
-    </style>
 </head>
 <body>
     <h1>Danh sách sản phẩm</h1>
+
+    <form method="GET">
+        <input type="hidden" name="act" value="/products">
+        <input type="text" name="keyword" placeholder="Tìm theo tên hoặc mô tả..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+        <button type="submit">Tìm kiếm</button>
+    </form>
+    <br>
+
+    <?php if (!empty($keyword)): ?>
+        <p>🔍 Tìm thấy <?= count($listProducts) ?> kết quả cho từ khóa "<strong><?= htmlspecialchars($keyword) ?></strong>"</p>
+    <?php endif; ?>
+    <br>
 
     <a href="?act=/product/add">➕ Thêm sản phẩm</a>
 
@@ -49,7 +42,7 @@
                         <td><?= htmlspecialchars($product['category_name'] ?? 'Chưa phân loại') ?></td>
                         <td>
                             <?php if (!empty($product['image_url'])): ?>
-                                <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Ảnh">
+                                <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Ảnh" width="100px">
                             <?php else: ?>
                                 Không có ảnh
                             <?php endif; ?>

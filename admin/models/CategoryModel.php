@@ -76,4 +76,19 @@ class CategoryModel {
             echo "Lỗi: " . $e->getMessage();
         }
     }
+
+    public function searchCategories($keyword) {
+        try {
+            $sql = "SELECT * FROM category WHERE name LIKE :kw";
+            $stmt = $this->conn->prepare($sql);
+            $kw = '%' . $keyword . '%';
+            $stmt->bindParam(':kw', $kw);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            echo "Lỗi tìm kiếm danh mục: " . $e->getMessage();
+            return [];
+        }
+    }
+
 }

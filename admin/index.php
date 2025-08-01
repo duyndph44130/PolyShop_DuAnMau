@@ -13,6 +13,8 @@ require_once './controllers/AuthController.php';
 require_once './controllers/UserController.php';
 require_once './controllers/CommentController.php';
 require_once './controllers/OrderController.php';
+require_once './controllers/PaymentController.php';
+require_once './controllers/VoucherController.php';
 
 // Require toàn bộ file Model
 require_once './models/CategoryModel.php';
@@ -20,6 +22,8 @@ require_once './models/ProductModel.php';
 require_once './models/UserModel.php';
 require_once './models/CommentModel.php';
 require_once './models/OrderModel.php';
+require_once './models/PaymentModel.php';
+require_once './models/VoucherModel.php';
 
 // Định nghĩa các route yêu cầu quyền admin
 $adminRoutes = [
@@ -86,6 +90,16 @@ match ($act) {
     '/orders' => (new OrderController()) ->list(),
     '/order/detail' => (new OrderController()) ->detail($_GET['id'] ?? null),
     '/order/edit' => (new OrderController()) ->edit($_GET['id'] ?? null),    
+
+    // Payment
+    '/payments' => (new PaymentController())->list(),
+    '/payment/detail' => (new PaymentController())->detail($_GET['id'] ?? null),
+
+    // Voucher
+    '/vouchers' => (new VoucherController())->list(),
+    '/voucher/add' => (new VoucherController())->add(),
+    '/voucher/edit' => (new VoucherController())->edit($_GET['id'] ?? null),
+    '/voucher/delete' => (new VoucherController())->delete($_GET['id'] ?? null),    
 
     // 404 fallback
     default => http_response_code(404),
