@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách danh mục</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
+
     <h1>Danh sách danh mục</h1>
     
     <form method="GET">
@@ -14,43 +12,44 @@
         <button type="submit">Tìm kiếm</button>
     </form>
     <br>
-
+    
     <?php if (!empty($keyword)): ?>
         <p>Đã tìm thấy <?= count($listCategories) ?> kết quả cho từ khóa: <strong><?= htmlspecialchars($keyword) ?></strong></p>
-    <?php endif; ?>
-    <br>
-    
-    <a href="?act=/category/add">Thêm danh mục</a>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tên danh mục</th>
-                <th>Mô tả</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($listCategories)): ?>
-                <?php foreach ($listCategories as $category): ?>
-                    <tr>
-                        <td><?= $category['category_id'] ?></td>
+        <?php endif; ?>
+        <br>
+        
+        <a class="btn" href="?act=/category/add">Thêm danh mục</a>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên danh mục</th>
+                    <th>Mô tả</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($listCategories)): ?>
+                    <?php foreach ($listCategories as $category): ?>
+                        <tr>
+                            <td><?= $category['category_id'] ?></td>
                         <td><?= $category['name'] ?></td>
                         <td><?= $category['description'] ?></td>
                         <td>
-                            <a href="?act=/category/show&id=<?= $category['category_id'] ?>">Xem</a> |
+                            <a href="?act=/category/detail&id=<?= $category['category_id'] ?>">Xem</a> |
                             <a href="?act=/category/edit&id=<?= $category['category_id'] ?>">Sửa</a> |
                             <a href="?act=/category/delete&id=<?= $category['category_id'] ?>" onclick="return confirm('Bạn có chắc muốn xóa không?')">Xóa</a>
                         </td>
                     </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="3">Không có danh mục nào.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3">Không có danh mục nào.</td>
+                        </tr>
+                    <?php endif; ?>
+            </tbody>
+                    
+        </table>
+</div>
 
-    </table>
-</body>
-</html>
+<?php include './views/layouts/footer.php'; ?>

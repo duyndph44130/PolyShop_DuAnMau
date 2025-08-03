@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách voucher</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h2>Danh sách mã giảm giá</h2>
 
     <form method="GET">
@@ -20,9 +17,9 @@
     <?php endif; ?>
     <br>
 
-    <a href="?act=/voucher/add">+ Thêm mới voucher</a>
+    <a class="btn" href="?act=/voucher/add">+ Thêm mới voucher</a>
 
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table border="1" cellspacing="0">
     <tr>
         <th>ID</th>
         <th>Mã code</th>
@@ -52,5 +49,6 @@
     <?php endforeach; ?>
     </table>
 
-</body>
-</html>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>

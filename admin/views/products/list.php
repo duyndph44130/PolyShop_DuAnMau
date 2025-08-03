@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Danh sách sản phẩm</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h1>Danh sách sản phẩm</h1>
 
     <form method="GET">
@@ -19,9 +17,9 @@
     <?php endif; ?>
     <br>
 
-    <a href="?act=/product/add">➕ Thêm sản phẩm</a>
+    <a class="btn" href="?act=/product/add">Thêm sản phẩm</a>
 
-    <table>
+    <table border="1" >
         <thead>
             <tr>
                 <th>ID</th>
@@ -61,5 +59,6 @@
             <?php endif; ?>
         </tbody>
     </table>
-</body>
-</html>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>

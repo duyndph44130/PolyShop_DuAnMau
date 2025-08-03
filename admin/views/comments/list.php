@@ -1,30 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Danh sách bình luận</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
 
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        a.delete-btn {
-            color: red;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
+<div class="main-content">
     <h1>📋 Danh sách bình luận</h1>
 
     <table>
@@ -60,5 +38,7 @@
             <?php endif; ?>
         </tbody>
     </table>
-</body>
-</html>
+</div>
+
+
+<?php include './views/layouts/footer.php'; ?>

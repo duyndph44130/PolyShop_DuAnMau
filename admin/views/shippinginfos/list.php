@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách vận chuyển</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h2>Danh sách vận chuyển</h2>
 
-    <table border="1" cellpadding="8">
+    <table border="1" >
     <tr>
         <th>ID</th>
         <th>Khách hàng</th>
@@ -20,20 +17,21 @@
         <th>Ngày đặt</th>
         <th>Hành động</th>
     </tr>
-    <?php foreach ($shipments as $s): ?>
+    <?php foreach ($shipments as $shippinginfo): ?>
     <tr>
-        <td><?= $s['shipping_id'] ?></td>
-        <td><?= htmlspecialchars($s['user_name']) ?></td>
-        <td><?= htmlspecialchars($s['recipient_name']) ?></td>
-        <td><?= htmlspecialchars($s['address']) ?></td>
-        <td><?= $s['phone'] ?></td>
-        <td><?= $s['shipping_method'] ?></td>
-        <td><?= $s['shipping_status'] ?></td>
-        <td><?= $s['created_at'] ?></td>
-        <td><a href="?act=/shipping/edit&id=<?= $s['shipping_id'] ?>">Sửa</a></td>
+        <td><?= $shippinginfo['shipping_id'] ?></td>
+        <td><?= htmlspecialchars($shippinginfo['user_name']) ?></td>
+        <td><?= htmlspecialchars($shippinginfo['recipient_name']) ?></td>
+        <td><?= htmlspecialchars($shippinginfo['address']) ?></td>
+        <td><?= $shippinginfo['phone'] ?></td>
+        <td><?= $shippinginfo['shipping_method'] ?></td>
+        <td><?= $shippinginfo['shipping_status'] ?></td>
+        <td><?= $shippinginfo['created_at'] ?></td>
+        <td><a href="?act=/shippinginfo/detail&id=<?= $shippinginfo['shipping_id'] ?>">Xem chi tiết</a></td>
+        <td><a href="?act=/shippinginfo/edit&id=<?= $shippinginfo['shipping_id'] ?>">Sửa</a></td>
     </tr>
     <?php endforeach; ?>
     </table>
+</div>
 
-</body>
-</html>
+<?php include './views/layouts/footer.php'; ?>

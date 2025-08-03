@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký</title>
+    <link rel="stylesheet" href="/PolyShop_DuAnMau/admin/assets/css/admin.css">
 </head>
-<body>
+<div class="main-content">
     <h1>Đăng ký tài khoản</h1>
     <form method="post" action="?act=/register">
         <label>Họ tên:</label><br>

@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sửa thông tin người dùng</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h1>Sửa thông tin người dùng</h1>
     <?php if (!empty($errors)): ?>
         <div class="error">
@@ -40,10 +37,9 @@
     <p>Bạn có chắc chắn muốn xoá người dùng <strong><?= htmlspecialchars($user['name']) ?></strong>?</p>
     <form method="post">
         <button type="submit">Xác nhận xoá</button>
-        <a href="?act=/users">Huỷ</a>
+        <a class="btn" href="?act=/users">Huỷ</a>
     </form>
-</body>
-</html>
+</div>
     
 <script>
     function togglePassword() {
@@ -51,3 +47,5 @@
         passwordInput.type = (passwordInput.type === "password") ? "text" : "password";
     }
 </script>        
+
+<?php include './views/layouts/footer.php'; ?>

@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Thêm sản phẩm</title>
-    <style>
-        label { display: block; margin-top: 10px; }
-        .error { color: red; }
-    </style>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h1>Thêm sản phẩm</h1>
 
     <?php if (!empty($errors)): ?>
@@ -24,29 +18,29 @@
     <form act="" method="post" enctype="multipart/form-data">
         <label>Tên sản phẩm:
             <input type="text" name="name" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
-        </label>
+        </label><br><br>
 
         <label>Mô tả:
             <textarea name="description"><?= htmlspecialchars($_POST['description'] ?? '') ?></textarea>
-        </label>
+        </label><br><br>
 
         <label>Giá:
             <input type="number" name="price" value="<?= htmlspecialchars($_POST['price'] ?? 0) ?>">
-        </label>
+        </label><br><br>
 
         <label>Size:
             <input type="text" name="size" value="<?= htmlspecialchars($_POST['size'] ?? '') ?>">
-        </label>
+        </label><br><br>
 
         <label>Màu sắc:
             <input type="text" name="color" value="<?= htmlspecialchars($_POST['color'] ?? '') ?>">
-        </label>
+        </label><br><br>
 
         <label>Số lượng tồn kho:
             <input type="number" name="stock_quantity" value="<?= htmlspecialchars($_POST['stock_quantity'] ?? 0) ?>">
-        </label>
+        </label><br><br>
 
-        <label>Danh mục:</label>
+        <label>Danh mục:</label><br>
         <select name="category_id">
             <option value="">-- Chọn danh mục --</option>
             <?php foreach ($categories as $cat): ?>
@@ -59,11 +53,12 @@
 
         <label>Hình ảnh:
             <input type="file" name="image">
-        </label>
+        </label><br><br>
 
         <br>
         <button type="submit">Thêm</button>
-        <a href="?act=/products">Hủy</a>
+        <a class="btn" href="?act=/products">Hủy</a>
     </form>
-</body>
-</html>
+
+</div>
+<?php include './views/layouts/footer.php'; ?>

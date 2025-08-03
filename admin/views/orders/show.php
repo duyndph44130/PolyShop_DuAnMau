@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết đơn hàng</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h2>Chi tiết đơn hàng #<?= $order['order_id'] ?></h2>
     <p><strong>Khách hàng:</strong> <?= htmlspecialchars($order['user_name']) ?></p>
     <p><strong>Ngày đặt:</strong> <?= $order['created_at'] ?></p>
@@ -33,7 +30,7 @@
     </table>
     
     <br>
-    <a href="?act=/orders">← Quay lại danh sách đơn hàng</a>
+    <a class="btn" href="?act=/orders">← Quay lại danh sách đơn hàng</a>
+</div>
 
-</body>
-</html>
+<?php include './views/layouts/footer.php'; ?>

@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Thêm danh mục</title>
-    <style>
-        .error { color: red; }
-        label { display: block; margin-top: 10px; }
-    </style>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h1>Thêm danh mục</h1>
 
     <?php if (!empty($errors)): ?>
@@ -24,13 +18,15 @@
     <form action="?act=/category/add" method="post">
         <label for="name">Tên danh mục:</label>
         <input type="text" id="name" name="name" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
+        <br><br>
 
         <label for="description">Mô tả:</label>
         <textarea id="description" name="description"><?= htmlspecialchars($_POST['description'] ?? '') ?></textarea>
 
         <br><br>
         <button type="submit">Thêm</button>
-        <a href="?act=/categories">Quay lại danh sách</a>
+        <a class="btn" href="?act=/categories">Quay lại danh sách</a>
     </form>
-</body>
-</html>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>

@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chi tiết danh mục</title>
-    <style>
-        body { font-family: Arial; margin: 20px; }
-        .info { margin-bottom: 20px; }
-        .label { font-weight: bold; }
-    </style>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h1>Chi tiết danh mục</h1>
 
     <?php if (empty($category)): ?>
@@ -24,5 +17,6 @@
 
         <a href="?act=/categories">← Quay lại danh sách</a>
     <?php endif; ?>
-</body>
-</html>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>

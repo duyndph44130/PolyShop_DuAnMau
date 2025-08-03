@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách đơn hàng</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h2>Danh sách đơn hàng</h2>
-    <table border="1" cellpadding="8">
+    <table border="1">
     <tr>
         <th>ID</th>
         <th>Khách hàng</th>
@@ -28,6 +25,6 @@
         </tr>
     <?php endforeach; ?>
     </table>
+</div>
 
-</body>
-</html>
+<?php include './views/layouts/footer.php'; ?>

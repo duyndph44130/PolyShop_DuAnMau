@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chi tiết sản phẩm</title>
-    <style>
-        .label { font-weight: bold; }
-        img { max-width: 200px; height: auto; display: block; margin-top: 10px; }
-    </style>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h1>Chi tiết sản phẩm</h1>
 
     <?php if (empty($product)): ?>
@@ -23,11 +17,13 @@
         <p><span class="label">Tồn kho:</span> <?= $product['stock_quantity'] ?></p>
         <p><span class="label">Danh mục:</span> <?= $product['category_id'] ?></p>
         <?php if (!empty($product['image_url'])): ?>
-            <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Ảnh sản phẩm">
+            <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Ảnh sản phẩm" width="200px">
         <?php endif; ?>
     <?php endif; ?>
 
     <br>
-    <a href="?act=/products">← Quay lại danh sách</a>
-</body>
-</html>
+    <a class="btn" href="?act=/products">← Quay lại danh sách</a>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>
+

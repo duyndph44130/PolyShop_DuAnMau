@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>>Chỉnh sửa trạng thái vận chuyển</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h2>Chỉnh sửa trạng thái vận chuyển</h2>
 
     <p><strong>Khách hàng:</strong> <?= htmlspecialchars($shipment['user_name']) ?></p>
@@ -13,8 +10,10 @@
     <p><strong>Địa chỉ:</strong> <?= $shipment['address'] ?></p>
     <p><strong>Phương thức:</strong> <?= $shipment['shipping_method'] ?></p>
     <p><strong>Trạng thái hiện tại:</strong> <?= $shipment['shipping_status'] ?></p>
+    <p><strong>Ngày đặt hàng:</strong> <?= $shipment['created_at'] ?></p>
 
-    <form method="POST">
+
+    <form method="POST" action="?act=/shippinginfo/edit&id=<?= $shipment['shipping_id'] ?>">        
         <label for="shipping_status">Trạng thái mới:</label>
         <select name="shipping_status" id="shipping_status">
             <?php
@@ -28,6 +27,6 @@
         <br><br>
         <button type="submit">Cập nhật</button>
     </form>
+</div>
 
-</body>
-</html>
+<?php include './views/layouts/footer.php'; ?>

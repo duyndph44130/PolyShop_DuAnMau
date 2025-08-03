@@ -19,7 +19,7 @@ class AuthController {
                 $_SESSION['user'] = $user;
                 // var_dump($_SESSION); exit;
 
-                header('Location: ?act=/categories');
+                header('Location: ?act=/');
                 exit;
             } else {
                 $errors[] = "Email hoặc mật khẩu không đúng.";

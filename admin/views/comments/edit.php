@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Sửa trạng thái bình luận</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+<div class="main-content">
     <h1>🛠 Sửa trạng thái bình luận</h1>
 
     <div class="comment-info">
@@ -26,6 +23,8 @@
     </form>
 
     <br>
-    <a href="?act=/comments">⬅ Quay lại danh sách bình luận</a>
-</body>
-</html>
+    <a class="btn" href="?act=/comments">⬅ Quay lại danh sách bình luận</a>
+</div>
+
+
+<?php include './views/layouts/footer.php'; ?>

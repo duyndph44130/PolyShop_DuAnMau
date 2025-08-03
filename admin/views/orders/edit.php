@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sửa trạng thái đơn hàng</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h2>Chi tiết đơn hàng <?= $order['order_id'] ?></h2>
 
     <p><strong>Khách hàng:</strong> <?= htmlspecialchars($order['user_name']) ?></p>
@@ -13,7 +10,7 @@
     <p><strong>Trạng thái hiện tại:</strong> <?= $order['status'] ?></p>
 
     <h3>Sản phẩm trong đơn hàng</h3>
-    <table border="1" cellpadding="8">
+    <table border="1" >
     <tr>
         <th>Ảnh</th>
         <th>Tên sản phẩm</th>
@@ -54,7 +51,7 @@
     </form>
 
     <br>
-    <a href="?act=/orders">← Quay lại danh sách đơn hàng</a>
+    <a class="btn" href="?act=/orders">← Quay lại danh sách đơn hàng</a>
+</div>
 
-</body>
-</html>
+<?php include './views/layouts/footer.php'; ?>

@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết thanh toán</title>
 </head>
-<body>
+<div class="main-content">
     <h2>Chi tiết thanh toán <?= $payment['payment_id'] ?></h2>
 
     <p><strong>Khách hàng:</strong> <?= htmlspecialchars($payment['user_name']) ?></p>
@@ -16,7 +18,8 @@
     <p><strong>Mã giao dịch:</strong> <?= $payment['transaction_id'] ?></p>
 
     <br>
-    <a href="?act=/payments">← Quay lại danh sách</a>
+    <a class="btn" href="?act=/payments">← Quay lại danh sách</a>
 
-</body>
-</html>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>

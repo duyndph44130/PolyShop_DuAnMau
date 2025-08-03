@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách người dùng</title>
-</head>
-<body>
+<?php include './views/layouts/header.php'; ?>
+<?php include './views/layouts/navbar.php'; ?>
+<?php include './views/layouts/sidebar.php'; ?>
+
+<div class="main-content">
     <h1>Danh sách người dùng</h1>
-    <a href="?act=/user/add">Thêm người dùng</a>
     <form method="GET" action="">
         <input type="hidden" name="act" value="/users">
         <input type="text" name="keyword" placeholder="Tìm theo tên hoặc email..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
@@ -20,6 +16,7 @@
     <?php endif; ?>
     <br>
 
+    <a class="btn" href="?act=/user/add">Thêm người dùng</a>
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
@@ -55,4 +52,6 @@
         </tbody>
     </table>
 </body>
-</html>
+</div>
+
+<?php include './views/layouts/footer.php'; ?>
