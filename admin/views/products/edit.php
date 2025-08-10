@@ -51,6 +51,12 @@
             </select>
         </label><br><br>
 
+        <label for="is_featured">Nổi bật:</label><br>
+        <select name="is_featured" id="is_featured">
+            <option value="0" <?= isset($product['is_featured']) && $product['is_featured'] == 0 ? 'selected' : '' ?>>Không</option>
+            <option value="1" <?= isset($product['is_featured']) && $product['is_featured'] == 1 ? 'selected' : '' ?>>Có</option>
+        </select>
+
         <label>Hình ảnh:
             <?php if (!empty($product['image_url'])): ?>
                 <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Ảnh sản phẩm hiện tại">

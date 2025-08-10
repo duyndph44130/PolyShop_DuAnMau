@@ -46,6 +46,7 @@ class ProductController {
             $category_id = $_POST['category_id'] ?? null;
             $created_by = 1;
             $image_url = '';
+            $is_featured = isset($_POST['is_featured']) ? 1 : 0;
 
             if (empty($name)) $errors[] = "Tên sản phẩm không được để trống.";
             if ($price <= 0) $errors[] = "Giá sản phẩm phải lớn hơn 0.";
@@ -73,7 +74,7 @@ class ProductController {
             }
 
             if (empty($errors)) {
-                if ($this->modelProduct->addProduct($name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id, $created_by)) {
+                if ($this->modelProduct->addProduct($name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id, $created_by, $is_featured)) {
                     header('Location: ?act=/products');
                     exit;
                 } else {
@@ -105,6 +106,7 @@ class ProductController {
             $stock_quantity = (int) ($_POST['stock_quantity'] ?? 0);
             $category_id = $_POST['category_id'] ?? null;
             $image_url = $product['image_url'];
+            $is_featured = isset($_POST['is_featured']) ? 1 : 0;
 
             if (empty($name)) $errors[] = "Tên sản phẩm không được để trống.";
             if ($price <= 0) $errors[] = "Giá sản phẩm phải lớn hơn 0.";
@@ -132,7 +134,7 @@ class ProductController {
             }
 
             if (empty($errors)) {
-                if ($this->modelProduct->updateProduct($id, $name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id)) {
+                if ($this->modelProduct->updateProduct($id, $name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id, $is_featured)) {
                     header('Location: ?act=/products');
                     exit;
                 } else {

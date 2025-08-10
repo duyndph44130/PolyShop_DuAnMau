@@ -16,7 +16,6 @@
     <?php if (!empty($keyword)): ?>
         <p>Đã tìm thấy <?= count($listCategories) ?> kết quả cho từ khóa: <strong><?= htmlspecialchars($keyword) ?></strong></p>
         <?php endif; ?>
-        <br>
         
         <a class="btn" href="?act=/category/add">Thêm danh mục</a>
         <table border="1">

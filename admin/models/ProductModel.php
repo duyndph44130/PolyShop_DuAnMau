@@ -38,14 +38,13 @@ class ProductModel {
     }
 
     // Thêm sản phẩm
-    public function addProduct($name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id, $created_by) {
+    public function addProduct($name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id, $created_by, $is_featured) {
         try {
             $sql = "INSERT INTO product 
-                    (name, description, price, size, color, stock_quantity, image_url, category_id, created_by)
+                    (name, description, price, size, color, stock_quantity, image_url, category_id, created_by, is_featured)
                     VALUES 
-                    (:name, :description, :price, :size, :color, :stock_quantity, :image_url, :category_id, :created_by)";
+                    (:name, :description, :price, :size, :color, :stock_quantity, :image_url, :category_id, :created_by, :is_featured)";
             $stmt = $this->conn->prepare($sql);
-
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':price', $price);
@@ -55,6 +54,7 @@ class ProductModel {
             $stmt->bindParam(':image_url', $image_url);
             $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
             $stmt->bindParam(':created_by', $created_by, PDO::PARAM_INT);
+            $stmt->bindParam(':is_featured', $is_featured, PDO::PARAM_BOOL);
 
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -64,7 +64,7 @@ class ProductModel {
     }
 
     // Cập nhật sản phẩm
-    public function updateProduct($id, $name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id) {
+    public function updateProduct($id, $name, $description, $price, $size, $color, $stock_quantity, $image_url, $category_id, $is_featured) {
         try {
             $sql = "UPDATE product SET 
                         name = :name,
@@ -74,10 +74,10 @@ class ProductModel {
                         color = :color,
                         stock_quantity = :stock_quantity,
                         image_url = :image_url,
-                        category_id = :category_id
+                        category_id = :category_id,
+                        is_featured = :is_featured
                     WHERE product_id = :id";
             $stmt = $this->conn->prepare($sql);
-
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':description', $description);
@@ -87,6 +87,7 @@ class ProductModel {
             $stmt->bindParam(':stock_quantity', $stock_quantity, PDO::PARAM_INT);
             $stmt->bindParam(':image_url', $image_url);
             $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+            $stmt->bindParam(':is_featured', $is_featured, PDO::PARAM_BOOL);
 
             return $stmt->execute();
         } catch (PDOException $e) {

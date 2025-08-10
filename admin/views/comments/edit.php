@@ -19,7 +19,7 @@
             <option value="1" <?= $comment['status'] == 1 ? 'selected' : '' ?>>Đã duyệt</option>
         </select>
         <br><br>
-        <button type="submit">Lưu thay đổi</button>
+        <button class="btn" type="submit">Lưu thay đổi</button>
     </form>
 
     <br>

@@ -10,4 +10,5 @@
     <a href="?act=/payments"><i class="bi bi-credit-card"></i> Thanh toán</a>
     <a href="?act=/shippinginfos"><i class="bi bi-truck"></i> Vận chuyển</a>
     <a href="?act=/comments"><i class="bi bi-chat-dots"></i> Bình luận</a>
+    <a href="?act=/contacts"><i class="bi bi-envelope"></i> Liên hệ</a>
 </div>

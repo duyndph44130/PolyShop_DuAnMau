@@ -15,7 +15,6 @@
     <?php if (!empty($keyword)): ?>
         <p>🔍 Tìm thấy <?= count($listProducts) ?> kết quả cho từ khóa "<strong><?= htmlspecialchars($keyword) ?></strong>"</p>
     <?php endif; ?>
-    <br>
 
     <a class="btn" href="?act=/product/add">Thêm sản phẩm</a>
 
@@ -26,6 +25,7 @@
                 <th>Tên sản phẩm</th>
                 <th>Giá</th>
                 <th>Danh mục</th>
+                <th>Nổi bật</th>
                 <th>Hình ảnh</th>
                 <th>Hành động</th>
             </tr>
@@ -38,6 +38,7 @@
                         <td><?= htmlspecialchars($product['name']) ?></td>
                         <td><?= number_format($product['price'], 0, ',', '.') ?> đ</td>
                         <td><?= htmlspecialchars($product['category_name'] ?? 'Chưa phân loại') ?></td>
+                        <td><?= $product['is_featured'] ? '✅' : '❌' ?></td>
                         <td>
                             <?php if (!empty($product['image_url'])): ?>
                                 <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Ảnh" width="100px">

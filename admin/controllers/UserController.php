@@ -45,25 +45,40 @@ class UserController {
             $role = $_POST['role'] ?? 'client';
 
             // Validate
-            if (empty($name)) $errors[] = "Tên không được để trống.";
-            if (empty($email)) $errors[] = "Email không được để trống.";
-            if (empty($password)) $errors[] = "Mật khẩu không được để trống.";
-            if (empty($phone)) $errors[] = "Số điện thoại không được để trống.";
-            if (empty($address)) $errors[] = "Địa chỉ không được để trống.";
-            if (empty($role)) $errors[] = "Vai trò không hợp lệ.";
-
-            if ($this->userModel->findByEmail($email)) {
-                $errors[] = "Email đã được sử dụng.";
+            if (empty($name)) {
+                $errors['name'] = "Tên không được để trống.";
             }
 
-            if (strlen($password) < 6) {
-                $errors[] = "Mật khẩu phải có ít nhất 6 ký tự.";
+            if (empty($email)) {
+                $errors['email'] = "Email không được để trống.";
+            } elseif ($this->userModel->findByEmail($email)) {
+                $errors['email'] = "Email đã được sử dụng.";
             }
 
-            if (!preg_match('/[A-Z]/', $password) || 
-                !preg_match('/[a-z]/', $password) || 
-                !preg_match('/[0-9]/', $password)) {
-                $errors[] = "Mật khẩu phải có ít nhất một chữ hoa, một chữ thường và một số.";
+            if (empty($password)) {
+                $errors['password'] = "Mật khẩu không được để trống.";
+            } elseif (strlen($password) < 6) {
+                $errors['password'] = "Mật khẩu phải có ít nhất 6 ký tự.";
+            } elseif (!preg_match('/[A-Z]/', $password) || 
+                    !preg_match('/[a-z]/', $password) || 
+                    !preg_match('/[0-9]/', $password)) {
+                $errors['password'] = "Mật khẩu phải có ít nhất một chữ hoa, một chữ thường và một số.";
+            }
+
+            if (empty($phone)) {
+                $errors['phone'] = "Số điện thoại không được để trống.";
+            } elseif (!preg_match('/^[0-9]{10,15}$/', $phone)) {
+                $errors['phone'] = "Số điện thoại phải từ 10 đến 15 chữ số.";
+            } elseif ($this->userModel->findByPhone($phone)) {
+                $errors['phone'] = "Số điện thoại đã được sử dụng.";
+            }
+
+            if (empty($address)) {
+                $errors['address'] = "Địa chỉ không được để trống.";
+            }
+
+            if (empty($role)) {
+                $errors['role'] = "Vai trò không hợp lệ.";
             }
 
             if (empty($errors)) {

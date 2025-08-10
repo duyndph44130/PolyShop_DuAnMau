@@ -9,7 +9,7 @@ require_once '../commons/function.php';
 // Require toàn bộ file Controller
 require_once './controllers/CategoryController.php';
 require_once './controllers/ProductController.php';
-require_once './controllers/AuthController.php';
+require_once './controllers/AdminAuthController.php';
 require_once './controllers/UserController.php';
 require_once './controllers/CommentController.php';
 require_once './controllers/OrderController.php';
@@ -17,6 +17,7 @@ require_once './controllers/PaymentController.php';
 require_once './controllers/ShippingInfoController.php';
 require_once './controllers/VoucherController.php';
 require_once './controllers/DashboardController.php';
+require_once './controllers/ContactController.php';
 
 // Require toàn bộ file Model
 require_once './models/CategoryModel.php';
@@ -28,6 +29,7 @@ require_once './models/PaymentModel.php';
 require_once './models/ShippingInfoModel.php';
 require_once './models/VoucherModel.php';
 require_once './models/DashboardModel.php';
+require_once './models/ContactModel.php';
 
 // Định nghĩa các route yêu cầu quyền admin
 $adminRoutes = [
@@ -88,6 +90,7 @@ if (in_array($act, $adminRoutes)) {
 // Định tuyến
 match ($act) {
     '/' => (new DashboardController())->index(),
+    '/dashboard' => (new DashboardController())->index(),
 
     // Category
     '/categories' => (new CategoryController())->list(),
@@ -104,9 +107,8 @@ match ($act) {
     '/product/detail' => (new ProductController())->detail($_GET['id'] ?? null),
 
     // Auth
-    '/login' => (new AuthController())->login(),
-    '/logout' => (new AuthController())->logout(),
-    '/register' => (new AuthController())->register(),
+    '/login' => (new AdminAuthController())->login(),
+    '/logout' => (new AdminAuthController())->logout(),
 
 
     // User
@@ -142,7 +144,13 @@ match ($act) {
     '/vouchers' => (new VoucherController())->list(),
     '/voucher/add' => (new VoucherController())->add(),
     '/voucher/edit' => (new VoucherController())->edit($_GET['id'] ?? null),
-    '/voucher/delete' => (new VoucherController())->delete($_GET['id'] ?? null),    
+    '/voucher/delete' => (new VoucherController())->delete($_GET['id'] ?? null),   
+    
+    // Contact
+    '/contacts' => (new ContactAdminController())->list(),
+    '/contact/detail' => (new ContactAdminController())->detail($_GET['id'] ?? null),
+    '/contact/updateStatus' => (new ContactAdminController())->updateStatus(),
+    '/contact/delete' => (new ContactAdminController())->delete(),
 
     // 404 fallback
     default => http_response_code(404),

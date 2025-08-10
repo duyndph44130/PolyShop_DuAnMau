@@ -51,9 +51,17 @@
             <?php endforeach; ?>
         </select>
 
+        <label for="is_featured">Nổi bật:</label><br>
+        <select name="is_featured" id="is_featured">
+            <option value="0" <?= isset($product['is_featured']) && $product['is_featured'] == 0 ? 'selected' : '' ?>>Không</option>
+            <option value="1" <?= isset($product['is_featured']) && $product['is_featured'] == 1 ? 'selected' : '' ?>>Có</option>
+        </select>
+
         <label>Hình ảnh:
             <input type="file" name="image">
         </label><br><br>
+
+
 
         <br>
         <button type="submit">Thêm</button>

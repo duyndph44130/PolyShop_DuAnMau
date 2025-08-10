@@ -21,7 +21,7 @@
         <?php endif; ?>
     <?php endif; ?>
 
-    <br>
+    <br><br>
     <a class="btn" href="?act=/products">← Quay lại danh sách</a>
 </div>
 

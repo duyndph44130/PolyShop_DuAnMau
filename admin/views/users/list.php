@@ -14,7 +14,6 @@
     <?php if (!empty($keyword)): ?>
         <p>Đã tìm thấy <?= count($listUsers) ?> kết quả cho từ khóa: <strong><?= htmlspecialchars($keyword) ?></strong></p>
     <?php endif; ?>
-    <br>
 
     <a class="btn" href="?act=/user/add">Thêm người dùng</a>
     <table border="1" cellpadding="5" cellspacing="0">
