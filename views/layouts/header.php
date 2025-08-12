@@ -1,4 +1,13 @@
-<?php $isLoggedIn = isset($_SESSION['user']); ?>
+<?php
+$isLoggedIn = isset($_SESSION['user']);
+$cartItemCount = 0;
+if ($isLoggedIn) {
+    // Tạm thời require model ở đây, nhưng tốt hơn nên truyền từ controller chính
+    require_once './models/CartModel.php';
+    $cartModel = new CartModel();
+    $cartItemCount = $cartModel->getTotalCartItems($_SESSION['user']['user_id']);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -41,36 +50,31 @@
         <!-- Search -->
         <form action="?act=/search" method="GET" class="flex items-center w-full max-w-sm">
             <input type="hidden" name="act" value="/search">
-            <input 
-                type="text" 
-                name="keyword" 
-                placeholder="Tìm sản phẩm..." 
+            <input
+                type="text"
+                name="keyword"
+                placeholder="Tìm sản phẩm..."
                 class="flex-grow border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
             >
-            <button 
-                type="submit" 
+            <button
+                type="submit"
                 class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-lg transition-colors duration-200"
             >
                 Tìm kiếm
             </button>
         </form>
 
-
-        <!-- <form action="?act=/search" method="GET" class="w-1/2 max-w-md pt-3">
-            <input
-                type="text"
-                name="keyword"
-                placeholder="Tìm sản phẩm..."
-                class="w-full px-4 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-        </form> -->
-
         <!-- Cart + User -->
         <div class="flex items-center gap-5 pt-3">
             <!-- Giỏ hàng -->
-            <a href="?act=/cart" class="text-blue-600 hover:text-blue-800 text-base font-semibold flex items-center gap-2 transition">
+            <a href="?act=/cart" class="text-blue-600 hover:text-blue-800 text-base font-semibold flex items-center gap-2 transition relative">
                 <i class="fa-solid fa-cart-shopping text-lg"></i>
                 <span class="hidden sm:inline">Giỏ hàng</span>
+                <?php if ($cartItemCount > 0): ?>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        <?= $cartItemCount ?>
+                    </span>
+                <?php endif; ?>
             </a>
 
             <!-- Tài khoản -->
@@ -98,7 +102,6 @@
         </div>
     </div>
 
-            
         <!-- MENU -->
         <nav class="bg-blue-600">
             <ul class="flex justify-center space-x-8 px-4 py-3 text-white text-base font-bold">

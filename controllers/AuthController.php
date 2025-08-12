@@ -3,7 +3,6 @@ class AuthController {
     private $userModel;
 
     public function __construct() {
-        if (session_status() === PHP_SESSION_NONE) session_start();
         $this->userModel = new UserModel();
     }
 
@@ -122,7 +121,6 @@ class AuthController {
 
     // Đăng xuất
     public function logout() {
-        if (session_status() === PHP_SESSION_NONE) session_start();
         session_destroy();
         header('Location: ?act=/login');
         exit;

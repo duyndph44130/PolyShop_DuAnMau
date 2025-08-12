@@ -3,7 +3,6 @@ class ContactAdminController {
     private $contactModel;
 
     public function __construct() {
-        if (session_status() === PHP_SESSION_NONE) session_start();
         $this->contactModel = new ContactModel();
         // Có thể thêm kiểm tra admin login ở đây
     }

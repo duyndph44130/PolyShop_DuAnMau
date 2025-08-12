@@ -50,7 +50,7 @@
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <?php foreach ($products as $product): ?>
                     <div class="bg-white shadow rounded p-3 hover:shadow-md transition">
-                        <a href="?act=product_detail&id=<?= $product['product_id'] ?>">
+                        <a href="?act=/product/detail&id=<?= $product['product_id'] ?>">
                             <img src="uploads/<?= htmlspecialchars($product['image_url']) ?>" 
                                     alt="<?= htmlspecialchars($product['name']) ?>" 
                                     class="w-full h-48 object-cover rounded">

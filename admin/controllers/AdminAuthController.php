@@ -3,7 +3,6 @@ class AdminAuthController {
     private $userModel;
 
     public function __construct() {
-        if (session_status() === PHP_SESSION_NONE) session_start();
         $this->userModel = new UserModel();
     }
 
@@ -60,7 +59,6 @@ class AdminAuthController {
 
     // Đăng xuất admin
     public function logout() {
-        if (session_status() === PHP_SESSION_NONE) session_start();
         unset($_SESSION['admin']);
         header('Location: ?act=/login');
         exit;

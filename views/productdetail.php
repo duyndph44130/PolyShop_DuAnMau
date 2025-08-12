@@ -1,4 +1,4 @@
-<?php include './views/layouts/header.php' ?>
+<?php include './views/layouts/header.php'; ?>
 
 <div class="container mx-auto px-4 py-6">
 
@@ -10,11 +10,12 @@
 
     <!-- Chi tiết sản phẩm -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
         <!-- Hình ảnh -->
         <div class="bg-white p-4 rounded-lg shadow">
-            <img src="assets/images/<?= htmlspecialchars($product['image_url'] ?? 'no-image.png') ?>"
-                 alt="<?= htmlspecialchars($product['name'] ?? 'Sản phẩm') ?>"
-                 class="w-full object-cover rounded">
+            <img src="assets/images/<?= htmlspecialchars($product['image'] ?? 'no-image.png') ?>"
+                alt="<?= htmlspecialchars($product['name'] ?? 'Sản phẩm') ?>"
+                class="w-full object-cover rounded">
         </div>
 
         <!-- Thông tin -->
@@ -23,21 +24,27 @@
             <p class="text-xl text-red-600 font-semibold">
                 <?= isset($product['price']) ? number_format($product['price']) . '₫' : 'Liên hệ' ?>
             </p>
-            <p class="text-sm text-gray-600">Danh mục: <strong><?= htmlspecialchars($category['name'] ?? 'Không rõ') ?></strong></p>
+            <p class="text-sm text-gray-600">
+                Danh mục: <strong><?= htmlspecialchars($category['name'] ?? 'Không rõ') ?></strong>
+            </p>
 
             <!-- Form thêm giỏ hàng -->
             <form action="?act=/cart/add" method="POST" class="space-y-4">
-                <input type="hidden" name="product_id" value="<?= $product['product_id'] ?? '' ?>">
+                <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
 
                 <!-- Số lượng -->
                 <label for="quantity" class="block text-sm font-medium mb-1">Số lượng:</label>
                 <div class="flex items-center gap-2">
-                    <button type="button" onclick="decreaseQty()" class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">−</button>
-                    <input id="quantityInput" type="number" name="quantity" min="1" value="1" class="w-16 text-center border px-2 py-1 rounded">
-                    <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">+</button>
+                    <button type="button" onclick="decreaseQty()"
+                        class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">−</button>
+                    <input id="quantityInput" type="number" name="quantity" min="1" value="1"
+                        class="w-20 text-center border px-2 py-1 rounded">
+                    <button type="button" onclick="increaseQty()"
+                        class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">+</button>
                 </div>
 
-                <button type="submit" class="block w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition">
+                <button type="submit"
+                    class="block w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition">
                     Thêm vào giỏ hàng
                 </button>
             </form>
@@ -57,11 +64,11 @@
         <div class="mt-6 bg-pink-50 border-l-4 border-pink-400 p-4 rounded">
             <h3 class="font-semibold text-pink-600">🎁 Khuyến mãi</h3>
             <p class="text-sm text-pink-800 mt-1">
-                Giảm <?= $voucher['discount_value'] ?>%
+                Giảm <?= htmlspecialchars($voucher['discount_value']) ?>%
                 <?php if (!empty($voucher['max_discount'])): ?>
                     , tối đa <?= number_format($voucher['max_discount']) ?>₫
                 <?php endif; ?>
-                (áp dụng từ <?= $voucher['start_date'] ?> đến <?= $voucher['end_date'] ?>)
+                (áp dụng từ <?= htmlspecialchars($voucher['start_date']) ?> đến <?= htmlspecialchars($voucher['end_date']) ?>)
             </p>
         </div>
     <?php endif; ?>
@@ -107,7 +114,7 @@
 
 </div>
 
-<?php include './views/layouts/footer.php' ?>
+<?php include './views/layouts/footer.php'; ?>
 
 <!-- Script tăng giảm số lượng -->
 <script>
