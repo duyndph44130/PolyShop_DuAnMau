@@ -65,7 +65,7 @@
         </label><br><br>
 
         <br><br>
-        <button type="submit">Cập nhật</button>
+        <button class="btn" type="submit">Cập nhật</button>
         <a class="btn" href="?act=/products">Quay lại danh sách</a>
     </form>
 

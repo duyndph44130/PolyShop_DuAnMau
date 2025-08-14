@@ -25,7 +25,7 @@
             <textarea id="description" name="description"><?= $category['description'] ?? '' ?></textarea>
             
             <br><br>
-            <button type="submit">Cập nhật</button>
+            <button class="btn" type="submit">Cập nhật</button>
             <a class="btn" href="?act=/categories">Quay lại danh sách</a>
         </form>
     </body>

@@ -6,8 +6,8 @@
     <title>Đăng nhập</title>
     <link rel="stylesheet" href="/PolyShop_DuAnMau/admin/assets/css/admin.css">
 </head>
-<div class="main-content">
-    <h1>Đăng nhập</h1>
+<div class="main-content" style="width: 800px; align-self: center;">
+    <h1 class="text-center">Đăng nhập</h1>
     <form method="post" action="?act=/login">
         <div>
             <label for="email">Email:</label>
@@ -18,7 +18,7 @@
             <input type="password" id="password" name="password" required><br>
             <label><input type="checkbox" onclick="togglePassword()"> Hiện mật khẩu</label><br>
         </div>
-        <button type="submit">Đăng nhập</button>
+        <button class="btn" type="submit">Đăng nhập</button>
     </form>
     <?php if (!empty($errors)): ?>
         <div>
@@ -38,3 +38,29 @@
         passwordInput.type = (passwordInput.type === "password") ? "text" : "password";
     }
 </script>
+
+    <!-- Footer HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <?php if (!empty($_SESSION['success'])): ?>
+    <script>
+    Swal.fire({
+    title: "Thành công",
+    text: "<?= addslashes($_SESSION['success']) ?>",
+    icon: "success",
+    showConfirmButton: false,
+    timer: 2000
+    });
+    </script>
+    <?php unset($_SESSION['success']); endif; ?>
+
+    <?php if (!empty($_SESSION['error'])): ?>
+    <script>
+    Swal.fire({
+    title: "Thất bại",
+    text: "<?= addslashes($_SESSION['error']) ?>",
+    icon: "error",
+    showConfirmButton: true
+    });
+    </script>
+    <?php unset($_SESSION['error']); endif; ?>

@@ -8,7 +8,7 @@
     <form method="GET">
         <input type="hidden" name="act" value="/vouchers">
         <input type="text" name="keyword" placeholder="Tìm theo mã voucher..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
-        <button type="submit">Tìm</button>
+        <button class="btn" type="submit">Tìm</button>
     </form>
     <br>
 

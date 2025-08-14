@@ -42,7 +42,7 @@
             <?php endforeach; ?>
         </select><br><br>
 
-        <button type="submit">➕ Thêm voucher</button>
+        <button class="btn" type="submit">➕ Thêm voucher</button>
     </form>
 
     <br><a href="?act=/vouchers">← Quay lại danh sách</a>

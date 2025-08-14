@@ -9,7 +9,7 @@
     <form method="GET" class="mb-4">
         <input type="hidden" name="act" value="/contacts">
         <input type="text" name="keyword" placeholder="Tìm liên hệ theo họ tên hoặc email..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
-        <button type="submit">Tìm kiếm</button>
+        <button class="btn" type="submit">Tìm kiếm</button>
     </form>
 
     <?php if (!empty($keyword)): ?>

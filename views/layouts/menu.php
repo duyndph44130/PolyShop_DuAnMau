@@ -1,83 +1,72 @@
+<!-- BANNER + DANH MỤC -->
+<!-- Style block removed as it's now in main.css -->
 
-    <!-- BANNER + DANH MỤC -->
-    <section class="container mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-        <!-- DANH MỤC -->
-        <div class="bg-white shadow rounded-lg p-4 h-fit max-h-[400px] overflow-y-auto sticky top-32">
-            <h3 class="text-lg font-semibold mb-3 border-b pb-2">📂 Danh mục</h3>
-            <ul class="space-y-2">
-                <?php if (!empty($categories)): ?>
-                    <?php foreach ($categories as $category): ?>
-                        <li>
-                            <a href="?act=/category&id=<?= $category['category_id'] ?>"
-                                class="block px-3 py-2 rounded hover:bg-blue-50 hover:text-blue-600">
-                                <?= htmlspecialchars($category['name']) ?>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <li class="text-gray-400">Không có danh mục</li>
-                <?php endif; ?>
-            </ul>
+<section class="container menu-section"> <!-- Thêm menu-section để phân biệt -->
+    <!-- DANH MỤC -->
+    <div class="category-box">
+        <h3>📂 Danh mục</h3>
+        <ul class="category-list">
+            <?php if (!empty($categories)): ?>
+                <?php foreach ($categories as $cat): ?>
+                    <li>
+                        <a href="?act=/category&id=<?= $cat['category_id'] ?>">
+                            <?= htmlspecialchars($cat['name']) ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li class="no-category-message">Không có danh mục</li>
+            <?php endif; ?>
+        </ul>
+    </div>
+
+    <!-- BANNER + DỊCH VỤ -->
+    <div class="banner-wrapper">
+        <!-- BANNER -->
+        <div class="banner-slider">
+            <img src="admin/uploads/banner1.webp" class="banner-slide active" alt="Banner 1">
+            <img src="admin/uploads/banner2.webp" class="banner-slide" alt="Banner 2">
+            <img src="admin/uploads/banner3.webp" class="banner-slide" alt="Banner 3">
+
+            <button id="prevSlide" class="banner-btn prev">‹</button>
+            <button id="nextSlide" class="banner-btn next">›</button>
         </div>
 
-        <!-- BANNER + DỊCH VỤ -->
-        <div class="md:col-span-3 space-y-6">
-            <!-- BANNER -->
-            <div class="relative rounded-lg overflow-hidden shadow-lg h-64 md:h-80">
-                <img src="assets/images/banner1.jpg" class="absolute w-full h-full object-cover banner-slide active" alt="Banner 1">
-                <img src="assets/images/banner2.jpg" class="absolute w-full h-full object-cover banner-slide hidden" alt="Banner 2">
-                <img src="assets/images/banner3.jpg" class="absolute w-full h-full object-cover banner-slide hidden" alt="Banner 3">
-
-                <button id="prevSlide" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-3xl bg-black/30 px-3 py-1 rounded-full hover:bg-black/50">‹</button>
-                <button id="nextSlide" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-3xl bg-black/30 px-3 py-1 rounded-full hover:bg-black/50">›</button>
-            </div>
-
-            <!-- DỊCH VỤ -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-lg shadow text-center">
-                    🚚
-                    <p class="font-semibold mt-2 text-sm">Miễn phí vận chuyển</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow text-center">
-                    🔁
-                    <p class="font-semibold mt-2 text-sm">Đổi trả trong 7 ngày</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow text-center">
-                    📞
-                    <p class="font-semibold mt-2 text-sm">Hỗ trợ 24/7</p>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow text-center">
-                    💳
-                    <p class="font-semibold mt-2 text-sm">Thanh toán linh hoạt</p>
-                </div>
-            </div>
+        <!-- DỊCH VỤ -->
+        <div class="services-grid"> <!-- Đổi tên class để tránh xung đột -->
+            <div class="service-item">🚚<p>Miễn phí vận chuyển</p></div>
+            <div class="service-item">🔁<p>Đổi trả trong 7 ngày</p></div>
+            <div class="service-item">📞<p>Hỗ trợ 24/7</p></div>
+            <div class="service-item">💳<p>Thanh toán linh hoạt</p></div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Banner Script -->
-    <script>
-        const slides = document.querySelectorAll('.banner-slide');
-        let index = 0;
+<script>
+    const slides = document.querySelectorAll('.banner-slide');
+    let index = 0;
 
-        function showSlide(i) {
-            slides.forEach((slide, idx) => {
-                slide.classList.toggle('hidden', idx !== i);
-                slide.classList.toggle('active', idx === i);
-            });
-        }
+    function showSlide(i) {
+        slides.forEach((slide, idx) => {
+            slide.classList.toggle('active', idx === i);
+        });
+    }
 
-        document.getElementById('prevSlide').onclick = () => {
-            index = (index - 1 + slides.length) % slides.length;
-            showSlide(index);
-        };
+    // Initial display
+    showSlide(index);
 
-        document.getElementById('nextSlide').onclick = () => {
-            index = (index + 1) % slides.length;
-            showSlide(index);
-        };
+    document.getElementById('prevSlide').onclick = () => {
+        index = (index - 1 + slides.length) % slides.length;
+        showSlide(index);
+    };
 
-        setInterval(() => {
-            index = (index + 1) % slides.length;
-            showSlide(index);
-        }, 5000);
-    </script>
+    document.getElementById('nextSlide').onclick = () => {
+        index = (index + 1) % slides.length;
+        showSlide(index);
+    };
+
+    setInterval(() => {
+        index = (index + 1) % slides.length;
+        showSlide(index);
+    }, 5000);
+</script>

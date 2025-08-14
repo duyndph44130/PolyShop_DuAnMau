@@ -1,50 +1,44 @@
 <?php include './views/layouts/header.php'; ?>
 
-<div class="container mx-auto px-4 py-6">
+<div class="product-detail-container container">
 
-    <!-- Quay lại -->
-    <button onclick="history.back()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+    <!-- Nút quay lại -->
+    <button onclick="history.back()" class="back-button">
         ⬅ Quay lại
     </button>
-    <br><br>
 
     <!-- Chi tiết sản phẩm -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="product-detail-grid">
         
         <!-- Hình ảnh -->
-        <div class="bg-white p-4 rounded-lg shadow">
-            <img src="assets/images/<?= htmlspecialchars($product['image'] ?? 'no-image.png') ?>"
+        <div class="product-image-box">
+            <img src="admin/<?= htmlspecialchars($product['image_url'] ?? 'no-image.png') ?>"
                 alt="<?= htmlspecialchars($product['name'] ?? 'Sản phẩm') ?>"
-                class="w-full object-cover rounded">
+                class="product-image-main"> <!-- Đổi tên class để tránh xung đột -->
         </div>
 
         <!-- Thông tin -->
-        <div class="bg-white p-6 rounded-lg shadow space-y-4">
-            <h1 class="text-2xl font-bold text-blue-700"><?= htmlspecialchars($product['name'] ?? '') ?></h1>
-            <p class="text-xl text-red-600 font-semibold">
+        <div class="product-info-box">
+            <h1 class="product-name"><?= htmlspecialchars($product['name'] ?? '') ?></h1>
+            <p class="product-price">
                 <?= isset($product['price']) ? number_format($product['price']) . '₫' : 'Liên hệ' ?>
             </p>
-            <p class="text-sm text-gray-600">
+            <p class="product-category">
                 Danh mục: <strong><?= htmlspecialchars($category['name'] ?? 'Không rõ') ?></strong>
             </p>
 
             <!-- Form thêm giỏ hàng -->
-            <form action="?act=/cart/add" method="POST" class="space-y-4">
+            <form action="?act=/cart/add" method="POST" id="addToCartForm" class="add-to-cart-form">
                 <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
 
-                <!-- Số lượng -->
-                <label for="quantity" class="block text-sm font-medium mb-1">Số lượng:</label>
-                <div class="flex items-center gap-2">
-                    <button type="button" onclick="decreaseQty()"
-                        class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">−</button>
-                    <input id="quantityInput" type="number" name="quantity" min="1" value="1"
-                        class="w-20 text-center border px-2 py-1 rounded">
-                    <button type="button" onclick="increaseQty()"
-                        class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">+</button>
+                <label for="quantityInput" class="quantity-label">Số lượng:</label>
+                <div class="quantity-control">
+                    <button type="button" onclick="decreaseQty()" class="quantity-btn quantity-minus-btn">−</button>
+                    <input id="quantityInput" type="number" name="quantity" min="1" value="1" class="quantity-input">
+                    <button type="button" onclick="increaseQty()" class="quantity-btn quantity-plus-btn">+</button>
                 </div>
 
-                <button type="submit"
-                    class="block w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition">
+                <button id="addToCartBtn" class="add-to-cart-btn btn-primary">
                     Thêm vào giỏ hàng
                 </button>
             </form>
@@ -52,18 +46,18 @@
     </div>
 
     <!-- Mô tả sản phẩm -->
-    <div class="mt-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-2">Mô tả sản phẩm</h2>
-        <div class="text-gray-700 leading-relaxed">
+    <div class="product-description-section">
+        <h2 class="section-title">Mô tả sản phẩm</h2>
+        <div class="product-description-content">
             <?= isset($product['description']) ? nl2br(htmlspecialchars($product['description'])) : 'Không có mô tả.' ?>
         </div>
     </div>
 
     <!-- Khuyến mãi -->
     <?php if (!empty($voucher)): ?>
-        <div class="mt-6 bg-pink-50 border-l-4 border-pink-400 p-4 rounded">
-            <h3 class="font-semibold text-pink-600">🎁 Khuyến mãi</h3>
-            <p class="text-sm text-pink-800 mt-1">
+        <div class="product-voucher-section">
+            <h3 class="section-title">🎁 Khuyến mãi</h3>
+            <p class="voucher-details">
                 Giảm <?= htmlspecialchars($voucher['discount_value']) ?>%
                 <?php if (!empty($voucher['max_discount'])): ?>
                     , tối đa <?= number_format($voucher['max_discount']) ?>₫
@@ -74,40 +68,38 @@
     <?php endif; ?>
 
     <!-- Bình luận -->
-    <div class="mt-10 bg-white p-6 rounded shadow">
-        <h3 class="text-xl font-semibold text-pink-700 mb-4">Bình luận sản phẩm</h3>
+    <div class="product-comments-section">
+        <h3 class="section-title">Bình luận sản phẩm</h3>
 
         <?php if (!empty($comments)): ?>
-            <div class="space-y-4 mb-6">
+            <div class="comment-list">
                 <?php foreach ($comments as $cmt): ?>
-                    <div class="border-b pb-3">
-                        <p class="text-sm font-medium text-gray-700">
-                            Người dùng: <span class="font-bold"><?= htmlspecialchars($cmt['user_name']) ?></span> – 
-                            <span><?= htmlspecialchars($cmt['created_at']) ?></span>
+                    <div class="comment-item">
+                        <p class="comment-meta">
+                            Người dùng: <strong class="comment-user"><?= htmlspecialchars($cmt['user_name']) ?></strong> – 
+                            <span class="comment-date"><?= htmlspecialchars($cmt['created_at']) ?></span>
                         </p>
-                        <p class="text-gray-800 mt-1"><?= htmlspecialchars($cmt['content']) ?></p>
+                        <p class="comment-content"><?= htmlspecialchars($cmt['content']) ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="text-gray-500 mb-6">Chưa có bình luận nào cho sản phẩm này.</p>
+            <p class="no-comments empty-message">Chưa có bình luận nào cho sản phẩm này.</p>
         <?php endif; ?>
 
         <!-- Form gửi bình luận -->
         <?php if (isset($_SESSION['user'])): ?>
-            <form action="?act=/comment/add" method="POST" class="space-y-4">
+            <form action="?act=/comment/add" method="POST" class="comment-form">
                 <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
 
-                <label for="content" class="block text-sm font-medium text-gray-700">Nội dung bình luận:</label>
-                <textarea name="content" id="content" rows="4" required
-                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"></textarea>
+                <label for="content" class="form-label">Nội dung bình luận:</label>
+                <textarea name="content" id="content" rows="4" required class="form-input"></textarea>
 
-                <button type="submit"
-                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Gửi bình luận</button>
+                <button type="submit" class="comment-submit-btn btn-primary">Gửi bình luận</button>
             </form>
         <?php else: ?>
-            <p class="text-sm text-gray-600 italic">
-                Vui lòng <a href="?act=/login" class="text-blue-600 hover:underline">đăng nhập</a> để bình luận.
+            <p class="login-to-comment d-flex">
+                Vui lòng <a href="?act=/login" class="login-link"> đăng nhập </a> để bình luận.
             </p>
         <?php endif; ?>
     </div>
@@ -128,4 +120,46 @@
         const input = document.getElementById('quantityInput');
         input.value = parseInt(input.value) + 1;
     }
+
+    document.getElementById('addToCartForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch('?act=/cart/add', {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }, // thêm dòng này
+            body: new URLSearchParams(formData)
+        })
+        
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    title: "Thành công!",
+                    text: "Sản phẩm đã được thêm vào giỏ hàng.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                // Cập nhật số lượng giỏ hàng trên header nếu cần
+                // Ví dụ: location.reload(); hoặc cập nhật badge bằng JS
+            } else {
+                Swal.fire({
+                    title: "Lỗi!",
+                    text: data.message || "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.",
+                    icon: "error",
+                    showConfirmButton: true
+                });
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            Swal.fire({
+                title: "Lỗi!",
+                text: "Không thể kết nối đến máy chủ.",
+                icon: "error",
+                showConfirmButton: true
+            });
+        });
+    });
 </script>

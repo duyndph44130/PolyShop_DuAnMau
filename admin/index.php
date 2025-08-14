@@ -1,10 +1,16 @@
 <?php
-// Bắt đầu phiên
+// Bắt đầu session
 session_start();
 
 // Require file Common
 require_once '../commons/env.php';
 require_once '../commons/function.php';
+
+// Kết nối CSDL (nếu cần)
+$conn = connectDB();
+if (!$conn) {
+    die("Kết nối thất bại");
+}
 
 // Require toàn bộ file Controller
 require_once './controllers/CategoryController.php';
@@ -13,7 +19,6 @@ require_once './controllers/AdminAuthController.php';
 require_once './controllers/UserController.php';
 require_once './controllers/CommentController.php';
 require_once './controllers/OrderController.php';
-require_once './controllers/PaymentController.php';
 require_once './controllers/ShippingInfoController.php';
 require_once './controllers/VoucherController.php';
 require_once './controllers/DashboardController.php';
@@ -25,67 +30,46 @@ require_once './models/ProductModel.php';
 require_once './models/UserModel.php';
 require_once './models/CommentModel.php';
 require_once './models/OrderModel.php';
-require_once './models/PaymentModel.php';
 require_once './models/ShippingInfoModel.php';
 require_once './models/VoucherModel.php';
 require_once './models/DashboardModel.php';
 require_once './models/ContactModel.php';
 
-// Định nghĩa các route yêu cầu quyền admin
-$adminRoutes = [
-    // Danh mục
-    '/categories', '/category/add', '/category/edit', '/category/delete', '/category/detail',
-    
-    // Sản phẩm
-    '/products', '/product/add', '/product/edit', '/product/delete', '/product/detail',
-    
-    // Người dùng
-    '/users', '/user/add', '/user/edit', '/user/delete', '/user/detail',
-
-    // Bình luận
-    '/comments', '/comment/delete', '/comment/edit',
-
-    // Đơn hàng
-    '/orders', '/order/edit',
-
-    // Thanh toán
-    '/payments',
-
-    // Vận chuyển
-    '/shippinginfos', '/shippinginfo/edit',
-
-    // Voucher
-    '/vouchers', '/voucher/add', '/voucher/edit', '/voucher/delete',
-];
-
-
-// Xác định hành động
-$act = $_GET['act'] ?? '/';
-
 // Danh sách route không yêu cầu đăng nhập
 $publicRoutes = ['/login', '/logout', '/register'];
 
+// Danh sách route yêu cầu quyền admin
+$adminRoutes = [
+    '/categories', '/category/add', '/category/edit', '/category/delete', '/category/detail',
+    '/products', '/product/add', '/product/edit', '/product/delete', '/product/detail',
+    '/users', '/user/add', '/user/edit', '/user/delete', '/user/detail',
+    '/comments', '/comment/delete', '/comment/edit',
+    '/orders', '/order/edit',
+    '/shippinginfos', '/shippinginfo/edit',
+    '/vouchers', '/voucher/add', '/voucher/edit', '/voucher/delete',
+    '/contacts', '/contact/detail', '/contact/updateStatus', '/contact/delete'
+];
+
+// Lấy hành động từ URL
+$act = $_GET['act'] ?? '/';
+
 // Kiểm tra đăng nhập
 if (!in_array($act, $publicRoutes)) {
-    if (empty($_SESSION['user'])) {
-        // Chưa đăng nhập → chuyển về login
+    if (empty($_SESSION['user']['user_id'])) {
         header('Location: ?act=/login');
         exit;
     }
 }
 
-// Kiểm tra quyền truy cập trang admin
+// Kiểm tra quyền admin
 if (in_array($act, $adminRoutes)) {
     $userRole = strtolower($_SESSION['user']['role'] ?? '');
-
     if ($userRole !== 'admin') {
-        // Không có quyền → chuyển về dashboard và flash thông báo
         $_SESSION['error'] = "Bạn không có quyền truy cập trang này!";
-        header('Location: ?act=/');
+        header('Location: ?act=/dashboard');
         exit;
     }
 }
-
 
 // Định tuyến
 match ($act) {
@@ -110,7 +94,6 @@ match ($act) {
     '/login' => (new AdminAuthController())->login(),
     '/logout' => (new AdminAuthController())->logout(),
 
-
     // User
     '/users' => (new UserController())->list(),
     '/user/add' => (new UserController())->add(),
@@ -126,26 +109,19 @@ match ($act) {
     '/comment/edit' => (new CommentController())->updateStatus($_GET['id'] ?? null),
 
     // Order
-    '/orders' => (new OrderController()) ->list(),
-    '/order/detail' => (new OrderController()) ->detail($_GET['id'] ?? null),
-    '/order/edit' => (new OrderController()) ->edit($_GET['id'] ?? null),    
-
-    // Payment
-    '/payments' => (new PaymentController())->list(),
-    '/payment/detail' => (new PaymentController())->detail(id: $_GET['id'] ?? null),
+    '/orders' => (new OrderController())->list(),
+    '/order/edit' => (new OrderController())->edit($_GET['id'] ?? null),
 
     // Shipping info
     '/shippinginfos' => (new ShippingInfoController())->list(),
-    '/shippinginfo/detail' => (new ShippingInfoController())->detail( $_GET['id'] ?? null),
-    '/shippinginfo/edit' => (new ShippingInfoController())->update( $_GET['id'] ?? null),
-    
+    '/shippinginfo/edit' => (new ShippingInfoController())->edit($_GET['id'] ?? null),
 
     // Voucher
     '/vouchers' => (new VoucherController())->list(),
     '/voucher/add' => (new VoucherController())->add(),
     '/voucher/edit' => (new VoucherController())->edit($_GET['id'] ?? null),
-    '/voucher/delete' => (new VoucherController())->delete($_GET['id'] ?? null),   
-    
+    '/voucher/delete' => (new VoucherController())->delete($_GET['id'] ?? null),
+
     // Contact
     '/contacts' => (new ContactAdminController())->list(),
     '/contact/detail' => (new ContactAdminController())->detail($_GET['id'] ?? null),

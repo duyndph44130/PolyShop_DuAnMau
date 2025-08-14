@@ -3,18 +3,44 @@
 <?php include './views/layouts/sidebar.php'; ?>
 <div class="main-content">
 
-    <h1>📊 Thống kê doanh số</h1>
+    <h1 class="text-3xl font-bold mb-2">📊 Thống kê doanh số</h1>
     <table>
-        <thead><tr><th>Tháng</th><th>Số lượng bán</th><th>Doanh thu</th></tr></thead>
-        <tbody>
-            <?php $total = 0; foreach ($monthlySales as $row): $total += $row['total_amount']; ?>
+        <thead>
             <tr>
-                <td>Tháng <?= $row['month'] ?></td>
-                <td><?= $row['total_orders'] ?></td>
-                <td><?= number_format($row['total_amount']) ?> VND</td>
+                <th>Tháng</th>
+                <th>Số lượng bán</th>
+                <th>Doanh thu</th>
             </tr>
-            <?php endforeach; ?>
-            <tr><td colspan="2"><strong>Tổng doanh thu</strong></td><td><strong><?= number_format($total) ?> VND</strong></td></tr>
+        </thead>
+        <tbody>
+            <?php
+            $total = 0;
+
+            // Tạo mảng dữ liệu đủ 12 tháng mặc định = 0
+            $salesData = array_fill(1, 12, ['total_orders' => 0, 'total_amount' => 0]);
+
+            // Đổ dữ liệu thực vào
+            foreach ($monthlySales as $row) {
+                $month = (int)$row['month'];
+                $salesData[$month]['total_orders'] = $row['total_orders'];
+                $salesData[$month]['total_amount'] = $row['total_amount'];
+            }
+
+            // Hiển thị đủ 12 tháng
+            for ($m = 1; $m <= 12; $m++):
+                $total += $salesData[$m]['total_amount'];
+            ?>
+                <tr>
+                    <td>Tháng <?= $m ?></td>
+                    <td><?= $salesData[$m]['total_orders'] ?></td>
+                    <td><?= number_format($salesData[$m]['total_amount']) ?> VND</td>
+                </tr>
+            <?php endfor; ?>
+
+            <tr>
+                <td colspan="2"><strong>Tổng doanh thu</strong></td>
+                <td><strong><?= number_format($total) ?> VND</strong></td>
+            </tr>
         </tbody>
     </table>
 
@@ -23,7 +49,7 @@
     <!-- Danh mục & Người dùng -->
     <div class="flex-columns">
         <div class="card-box">
-            <h3>📂 Danh mục</h3>
+            <h3 class="text-2xl font-bold mb-2">📂 Danh mục</h3>
             <ul class="styled-list">
                 <?php foreach ($categories as $cat): ?>
                     <li><strong><?= $cat['name'] ?></strong> – <?= $cat['description'] ?></li>
@@ -31,7 +57,7 @@
             </ul>
         </div>
         <div class="card-box">
-            <h3>👤 Người dùng</h3>
+            <h3 class="text-2xl font-bold mb-2">👤 Người dùng</h3>
             <ul class="styled-list">
                 <?php foreach ($users as $u): ?>
                     <li><strong><?= $u['name'] ?></strong> – <?= $u['email'] ?></li>
@@ -43,7 +69,7 @@
     <hr>
 
     <!-- Sản phẩm mới -->
-    <h3>🆕 Sản phẩm mới nhất</h3>
+    <h3 class="text-2xl font-bold mb-2">🆕 Sản phẩm mới nhất</h3>
     <table>
         <thead><tr><th>Tên</th><th>Giá</th><th>Số lượng</th><th>Danh mục</th></tr></thead>
         <tbody>
@@ -59,7 +85,7 @@
     </table>
 
     <!-- Đơn hàng gần đây -->
-    <h3>📦 Đơn hàng gần đây</h3>
+    <h3 class="text-2xl font-bold mb-2">📦 Đơn hàng gần đây</h3>
     <table>
         <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Ngày đặt</th><th>Trạng thái</th><th>Tổng</th></tr></thead>
         <tbody>
@@ -76,7 +102,7 @@
     </table>
 
     <!-- Bình luận -->
-    <h3>💬 Bình luận gần đây</h3>
+    <h3 class="text-2xl font-bold mb-2">💬 Bình luận gần đây</h3>
     <table>
         <thead><tr><th>Nội dung</th><th>Người dùng</th><th>Sản phẩm</th></tr></thead>
         <tbody>

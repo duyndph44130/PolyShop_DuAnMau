@@ -36,10 +36,12 @@ class AdminAuthController {
 
                     // Điều hướng theo role
                     if ($user['role'] === 'client') {
-                        header('Location: /PolyShop_DuAnMau/?act=/home'); // hoặc chỉ /PolyShop_DuAnMau nếu index.php mặc định
+                        $_SESSION['success'] = "Đăng nhập thành công!";
+                        header('Location: /PolyShop_DuAnMau/?act=/home');
                         exit;
                     } elseif ($user['role'] === 'admin') {
-                        header('Location: /PolyShop_DuAnMau/admin/?act=/dashboard'); // Chuyển đến trang admin mặc định (index.php)
+                        $_SESSION['success'] = "Đăng nhập thành công!";
+                        header('Location: /PolyShop_DuAnMau/admin/?act=/dashboard');
                         exit;
                     } else {
                         // Role không hợp lệ → đăng xuất
@@ -49,17 +51,18 @@ class AdminAuthController {
                         return;
                     }
                 } else {
-                    $errors['general'] = "Email hoặc mật khẩu không đúng.";
+                    $_SESSION['error'] = "Sai email hoặc mật khẩu!";
                 }
             }
         }
-
+        
         require_once './views/auth/login.php';
     }
 
     // Đăng xuất admin
     public function logout() {
         unset($_SESSION['admin']);
+        $_SESSION['success'] = "Đăng xuất thành công!";
         header('Location: ?act=/login');
         exit;
     }

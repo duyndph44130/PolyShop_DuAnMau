@@ -1,45 +1,49 @@
 <?php include './views/layouts/header.php'; ?>
 
-<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-    <h2 class="text-2xl font-bold mb-4">Đăng nhập tài khoản</h2>
+<div class="login-container container">
+    <h2 class="login-title">Đăng nhập tài khoản</h2>
 
     <?php if (!empty($error)): ?>
-        <div class="text-red-600 mb-3"><?= htmlspecialchars($error) ?></div>
+        <div class="error-message alert alert-error"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
-    <form method="POST" class="space-y-4">
+    <form method="POST" class="login-form">
         <!-- Email -->
-        <div>
-            <label for="email" class="block font-medium mb-1">Email</label>
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
             <input 
                 type="email" 
                 id="email" 
                 name="email" 
                 value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
-                class="w-full border px-3 py-2 rounded <?= !empty($errors['email']) ? 'border-red-500' : '' ?>"
+                class="form-input <?= !empty($errors['email']) ? 'input-error' : '' ?>"
             >
             <?php if (!empty($errors['email'])): ?>
-                <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['email']) ?></p>
+                <p class="error-text"><?= htmlspecialchars($errors['email']) ?></p>
             <?php endif; ?>
         </div>
 
         <!-- Mật khẩu -->
-        <div>
-            <label for="password" class="block font-medium mb-1">Mật khẩu</label>
+        <div class="form-group">
+            <label for="password" class="form-label">Mật khẩu</label>
             <input 
                 type="password" 
                 id="password" 
                 name="password" 
-                class="w-full border px-3 py-2 rounded <?= !empty($errors['password']) ? 'border-red-500' : '' ?>"
+                class="form-input <?= !empty($errors['password']) ? 'input-error' : '' ?>"
             >
             <?php if (!empty($errors['password'])): ?>
-                <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($errors['password']) ?></p>
+                <p class="error-text"><?= htmlspecialchars($errors['password']) ?></p>
             <?php endif; ?>
         </div>
 
-        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-            Đăng nhập
-        </button>
+        <button type="submit" class="btn-submit btn-primary">Đăng nhập</button>
+
+        <!-- Link đăng ký -->
+        <p class="register-link">
+            Bạn chưa có tài khoản?
+            <a href="?act=/register" class="register-now-link">Đăng ký ngay</a>
+        </p>
     </form>
 </div>
 

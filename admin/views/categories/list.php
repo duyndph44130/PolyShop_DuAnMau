@@ -9,7 +9,7 @@
     <form method="GET">
         <input type="hidden" name="act" value="/categories">
         <input type="text" name="keyword" placeholder="Tìm danh mục theo tên..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
-        <button type="submit">Tìm kiếm</button>
+        <button class="btn" type="submit">Tìm kiếm</button>
     </form>
     <br>
     

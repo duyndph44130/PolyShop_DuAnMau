@@ -8,7 +8,7 @@
     <form method="GET">
         <input type="hidden" name="act" value="/products">
         <input type="text" name="keyword" placeholder="Tìm theo tên hoặc mô tả..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
-        <button type="submit">Tìm kiếm</button>
+        <button class="btn" type="submit">Tìm kiếm</button>
     </form>
     <br>
 

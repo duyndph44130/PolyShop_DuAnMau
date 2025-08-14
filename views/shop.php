@@ -1,18 +1,18 @@
 <?php include './views/layouts/header.php'; ?>
 <?php include './views/layouts/menu.php'; ?>
 
-<div class="container mx-auto p-4 grid grid-cols-4 gap-4">
+<div class="shop-container container">
 
     <!-- Sidebar filter -->
-    <aside class="col-span-1 bg-white p-4 rounded shadow">
-        <form method="GET" action="">
+    <aside class="shop-sidebar">
+        <form method="GET" action="" class="filter-form">
             <input type="hidden" name="act" value="shop">
 
-            <h3 class="font-bold mb-2">Tìm kiếm</h3>
-            <input type="text" name="keyword" value="<?= htmlspecialchars($keyword ?? '') ?>" class="w-full border p-2 rounded mb-4">
+            <h3 class="filter-title">Tìm kiếm</h3>
+            <input type="text" name="keyword" value="<?= htmlspecialchars($keyword ?? '') ?>" class="filter-input form-input">
 
-            <h3 class="font-bold mb-2">Danh mục</h3>
-            <select name="category" class="w-full border p-2 rounded mb-4">
+            <h3 class="filter-title">Danh mục</h3>
+            <select name="category" class="filter-select form-input">
                 <option value="0">Tất cả</option>
                 <?php foreach ($categories as $cat): ?>
                     <option value="<?= $cat['category_id'] ?>" <?= (!empty($category_id) && $category_id == $cat['category_id']) ? 'selected' : '' ?>>
@@ -21,17 +21,15 @@
                 <?php endforeach; ?>
             </select>
 
-            <h3 class="font-bold mb-2 flex">Khoảng giá</h3>
-            <div class="flex items-center gap-2 mb-4">
-                <input type="number" name="min_price" placeholder="Từ" value="<?= htmlspecialchars($min_price ?? '') ?>" 
-                    class="w-1/2 border p-2 rounded">
-                <span>đến</span>
-                <input type="number" name="max_price" placeholder="Đến" value="<?= htmlspecialchars($max_price ?? '') ?>" 
-                    class="w-1/2 border p-2 rounded">
+            <h3 class="filter-title">Khoảng giá</h3>
+            <div class="filter-price">
+                <input type="number" name="min_price" placeholder="Từ" value="<?= htmlspecialchars($min_price ?? '') ?>" class="filter-input-small form-input"> <br>
+                <span class="price-sep">đến</span><br>
+                <input type="number" name="max_price" placeholder="Đến" value="<?= htmlspecialchars($max_price ?? '') ?>" class="filter-input-small form-input">
             </div>
 
-            <h3 class="font-bold mb-2">Sắp xếp</h3>
-            <select name="sort" class="w-full border p-2 rounded mb-4">
+            <h3 class="filter-title">Sắp xếp</h3>
+            <select name="sort" class="filter-select form-input">
                 <option value="">Mặc định</option>
                 <option value="price_asc" <?= (!empty($sort) && $sort == 'price_asc') ? 'selected' : '' ?>>Giá tăng dần</option>
                 <option value="price_desc" <?= (!empty($sort) && $sort == 'price_desc') ? 'selected' : '' ?>>Giá giảm dần</option>
@@ -39,23 +37,24 @@
                 <option value="oldest" <?= (!empty($sort) && $sort == 'oldest') ? 'selected' : '' ?>>Cũ nhất</option>
             </select>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Lọc</button>
+            <button type="submit" class="filter-btn btn-primary">Lọc</button>
         </form>
     </aside>
 
     <!-- Product list -->
-    <main class="col-span-3">
-        <h2 class="text-2xl font-bold mb-4">Sản phẩm</h2>
+    <main class="shop-main">
+        <h2 class="shop-title">Sản phẩm</h2>
         <?php if (!empty($products)): ?>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="product-list product-grid"> <!-- Thêm product-grid để đồng bộ -->
                 <?php foreach ($products as $product): ?>
-                    <div class="bg-white shadow rounded p-3 hover:shadow-md transition">
+                    <div class="product-item product-card"> <!-- Thêm product-card để đồng bộ -->
                         <a href="?act=/product/detail&id=<?= $product['product_id'] ?>">
-                            <img src="uploads/<?= htmlspecialchars($product['image_url']) ?>" 
+                            <img src="admin/<?= htmlspecialchars($product['image_url']) ?>" 
                                     alt="<?= htmlspecialchars($product['name']) ?>" 
-                                    class="w-full h-48 object-cover rounded">
-                            <h3 class="mt-2 text-sm font-semibold"><?= htmlspecialchars($product['name']) ?></h3>
-                            <p class="text-blue-600 font-bold mt-1"><?= number_format($product['price'], 0, ',', '.') ?>₫</p>
+                                    class="product-image">
+                            <h3 class="product-name"><?= htmlspecialchars($product['name']) ?></h3>
+                            <p class="product-price"><?= number_format($product['price'], 0, ',', '.') ?>₫</p>
+                            <a href="?act=/product/detail&id=<?= $product['product_id'] ?>" class="btn-view btn-primary">Xem chi tiết</a>
                         </a>
                     </div>
                 <?php endforeach; ?>
@@ -63,10 +62,10 @@
 
             <!-- Pagination -->
             <?php if (!empty($total_pages) && $total_pages > 1): ?>
-                <div class="mt-6 flex justify-center gap-2">
+                <div class="pagination">
                     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                         <a href="?act=shop&page=<?= $i ?>&keyword=<?= urlencode($keyword ?? '') ?>&category=<?= $category_id ?? 0 ?>&min_price=<?= $min_price ?? '' ?>&max_price=<?= $max_price ?? '' ?>&sort=<?= $sort ?? '' ?>"
-                            class="px-3 py-1 border rounded <?= ($i == $page) ? 'bg-blue-500 text-white' : 'bg-white' ?>">
+                            class="pagination-link <?= ($i == $page) ? 'active' : '' ?>">
                             <?= $i ?>
                         </a>
                     <?php endfor; ?>
@@ -75,12 +74,11 @@
 
         <?php else: ?>
             <?php if (!empty($keyword)): ?>
-                <p>Không tìm thấy sản phẩm nào cho từ khoá "<strong><?= htmlspecialchars($keyword) ?></strong>".</p>
+                <p class="no-product empty-message">Không tìm thấy sản phẩm nào cho từ khoá "<strong><?= htmlspecialchars($keyword) ?></strong>".</p>
             <?php else: ?>
-                <p>Không tìm thấy sản phẩm nào.</p>
+                <p class="no-product empty-message">Không tìm thấy sản phẩm nào.</p>
             <?php endif; ?>
         <?php endif; ?>
-
     </main>
 </div>
 

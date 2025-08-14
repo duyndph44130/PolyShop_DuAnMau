@@ -6,158 +6,109 @@ class CartModel {
         $this->conn = connectDB();
     }
 
-    /** 
-     * Lấy giỏ hàng theo user_id (nếu chưa có thì tạo mới)
-     */
-    public function getCartByUserId($userId) {
-        try {
-            $stmt = $this->conn->prepare("SELECT * FROM cart WHERE user_id = :user_id LIMIT 1");
-            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-            $stmt->execute();
-            $cart = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$cart) {
-                $stmt = $this->conn->prepare("
-                    INSERT INTO cart (user_id, created_at, updated_at) 
-                    VALUES (:user_id, NOW(), NOW())
-                ");
-                $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-                $stmt->execute();
-                $cartId = $this->conn->lastInsertId();
-                return [
-                    'cart_id' => $cartId,
-                    'user_id' => $userId,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
-            }
-
-            return $cart;
-        } catch (PDOException $e) {
-            error_log("CartModel::getCartByUserId error: " . $e->getMessage());
-            return null;
-        }
+    // CHỈ LẤY giỏ 'cart' (không tự tạo)
+    public function getCart($userId) {
+        $sql = "SELECT * FROM orders WHERE user_id = :user_id AND status = 'cart' LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    /**
-     * Lấy tất cả sản phẩm trong giỏ hàng
-     */
-    // Lấy tất cả sản phẩm trong giỏ hàng
-    public function getCartItems($cartId) {
-        $sql = "SELECT ci.cart_item_id, ci.cart_id, ci.product_id, ci.quantity, 
-                    p.name AS product_name, p.price, p.image_url, p.stock_quantity
-                FROM cartitem ci
-                JOIN product p ON ci.product_id = p.product_id
-                WHERE ci.cart_id = :cart_id";
+    // Tạo giỏ 'cart' khi THẬT SỰ cần
+    public function createCart($userId) {
+        $stmt = $this->conn->prepare(
+            "INSERT INTO orders (user_id, total_amount, status, created_at) 
+            VALUES (:user_id, 0, 'cart', NOW())"
+        );
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $cartId = $this->conn->lastInsertId();
+        return ['order_id' => $cartId, 'user_id' => $userId, 'total_amount' => 0, 'status' => 'cart'];
+    }
+
+    // Lấy sản phẩm trong giỏ hàng
+    public function getCartItems($orderId) {
+        $sql = "SELECT od.orderdetail_id, od.product_id, od.quantity, od.price, 
+                    p.name AS product_name, p.image_url, p.stock_quantity
+                FROM orderdetail od
+                JOIN product p ON od.product_id = p.product_id
+                WHERE od.order_id = :order_id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
+        $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-
-    // Thêm sản phẩm vào giỏ hàng hoặc cập nhật số lượng
-    public function addOrUpdateCartItem($cartId, $productId, $quantity, $price) {
-        try {
-            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-            $stmt = $this->conn->prepare("SELECT quantity FROM cartitem WHERE cart_id = :cart_id AND product_id = :product_id LIMIT 1");
-            $stmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
-            $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
-            $stmt->execute();
-            $existingItem = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($existingItem) {
-                // Cập nhật số lượng + updated_at
-                $newQuantity = $existingItem['quantity'] + $quantity;
-                $stmt = $this->conn->prepare("
-                    UPDATE cartitem 
-                    SET quantity = :quantity, updated_at = NOW() 
-                    WHERE cart_id = :cart_id AND product_id = :product_id
-                ");
-                $stmt->bindParam(':quantity', $newQuantity, PDO::PARAM_INT);
-                $stmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
-                $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
-                return $stmt->execute();
-            } else {
-                // Thêm mới sản phẩm
-                $stmt = $this->conn->prepare("
-                    INSERT INTO cartitem (cart_id, product_id, quantity, price, created_at, updated_at) 
-                    VALUES (:cart_id, :product_id, :quantity, :price, NOW(), NOW())
-                ");
-                $stmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
-                $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
-                $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-                $stmt->bindParam(':price', $price);
-                return $stmt->execute();
-            }
-        } catch (PDOException $e) {
-            error_log("CartModel::addOrUpdateCartItem error: " . $e->getMessage());
-            return false;
+    // Thêm hoặc cập nhật sản phẩm
+    public function addOrUpdateItem($userId, $productId, $quantity, $price) {
+        // 1) Lấy giỏ hiện có
+        $cart = $this->getCart($userId);
+        // 2) Nếu chưa có -> tạo MỚI ở đây (điểm hợp lý)
+        if (!$cart) {
+            $cart = $this->createCart($userId);
         }
-    }
-    /**
-     * Cập nhật số lượng sản phẩm
-     */
-    public function updateCartItemQuantity($cartItemId, $quantity) {
-        try {
-            $stmt = $this->conn->prepare("
-                UPDATE cartitem 
-                SET quantity = :quantity, updated_at = NOW() 
-                WHERE cartitem_id = :cartitem_id
-            ");
-            $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-            $stmt->bindParam(':cartitem_id', $cartItemId, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("CartModel::updateCartItemQuantity error: " . $e->getMessage());
-            return false;
+        $orderId = $cart['order_id'];
+
+        // 3) Thêm/cập nhật item
+        $sql = "SELECT * FROM orderdetail WHERE order_id = :order_id AND product_id = :product_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['order_id' => $orderId, 'product_id' => $productId]);
+        $item = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($item) {
+            $newQty = $item['quantity'] + $quantity;
+            $stmt = $this->conn->prepare("UPDATE orderdetail SET quantity = :qty WHERE orderdetail_id = :id");
+            $stmt->execute(['qty' => $newQty, 'id' => $item['orderdetail_id']]);
+        } else {
+            $stmt = $this->conn->prepare(
+                "INSERT INTO orderdetail (order_id, product_id, quantity, price) 
+                VALUES (:order_id, :product_id, :qty, :price)"
+            );
+            $stmt->execute([
+                'order_id' => $orderId,
+                'product_id' => $productId,
+                'qty' => $quantity,
+                'price' => $price
+            ]);
         }
+
+        // 4) Cập nhật tổng tiền
+        $this->calculateTotal($orderId);
+        return true;
     }
 
-    /**
-     * Xóa sản phẩm khỏi giỏ hàng
-     */
-    public function removeCartItem($cartItemId) {
-        try {
-            $stmt = $this->conn->prepare("DELETE FROM cartitem WHERE cartitem_id = :cartitem_id");
-            $stmt->bindParam(':cartitem_id', $cartItemId, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("CartModel::removeCartItem error: " . $e->getMessage());
-            return false;
-        }
+    // Cập nhật số lượng
+    public function updateQuantity($orderDetailId, $quantity) {
+        $stmt = $this->conn->prepare("UPDATE orderdetail SET quantity = :qty WHERE orderdetail_id = :id");
+        return $stmt->execute(['qty' => $quantity, 'id' => $orderDetailId]);
     }
 
-    /**
-     * Xóa toàn bộ giỏ hàng
-     */
-    public function clearCart($cartId) {
-        try {
-            $stmt = $this->conn->prepare("DELETE FROM cartitem WHERE cart_id = :cart_id");
-            $stmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("CartModel::clearCart error: " . $e->getMessage());
-            return false;
-        }
+    // Xóa sản phẩm
+    public function removeItem($orderDetailId) {
+        $stmt = $this->conn->prepare("DELETE FROM orderdetail WHERE orderdetail_id = :id");
+        return $stmt->execute(['id' => $orderDetailId]);
     }
 
-    /**
-     * Lấy tổng số lượng sản phẩm trong giỏ hàng
-     */
-    public function getTotalCartItems($userId) {
-        try {
-            $cart = $this->getCartByUserId($userId);
-            if (!$cart) return 0;
+    // Tính tổng tiền (ép về 0 nếu null)
+    public function calculateTotal($orderId) {
+        $stmt = $this->conn->prepare("SELECT SUM(quantity * price) FROM orderdetail WHERE order_id = :id");
+        $stmt->bindParam(':id', $orderId, PDO::PARAM_INT);
+        $stmt->execute();
+        $total = (float) ($stmt->fetchColumn() ?: 0);
 
-            $stmt = $this->conn->prepare("SELECT SUM(quantity) FROM cartitem WHERE cart_id = :cart_id");
-            $stmt->bindParam(':cart_id', $cart['cart_id'], PDO::PARAM_INT);
-            $stmt->execute();
-            return (int)$stmt->fetchColumn();
-        } catch (PDOException $e) {
-            error_log("CartModel::getTotalCartItems error: " . $e->getMessage());
-            return 0;
-        }
+        $stmt2 = $this->conn->prepare("UPDATE orders SET total_amount = :total WHERE order_id = :id");
+        $stmt2->execute(['total' => $total, 'id' => $orderId]);
+
+        return $total;
+    }
+
+    public function updateStatus($orderId, $status) {
+        $sql = "UPDATE orders SET status = :status WHERE order_id = :order_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'status'   => $status,
+            'order_id' => $orderId
+        ]);
     }
 }

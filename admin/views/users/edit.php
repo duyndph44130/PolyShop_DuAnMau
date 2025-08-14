@@ -26,7 +26,7 @@
                 <option value="admin" <?= (($_POST['role'] ?? $user['role']) === 'admin') ? 'selected' : '' ?>>Admin</option>
             </select>
         </label><br>
-        <button type="submit">Cập nhật</button>
+        <button class="btn" type="submit">Cập nhật</button>
     </form>
     <a href="?act=/users">Quay lại</a>
 
@@ -36,7 +36,7 @@
     <h1>Xác nhận xoá người dùng</h1>
     <p>Bạn có chắc chắn muốn xoá người dùng <strong><?= htmlspecialchars($user['name']) ?></strong>?</p>
     <form method="post">
-        <button type="submit">Xác nhận xoá</button>
+        <button class="btn" type="submit">Xác nhận xoá</button>
         <a class="btn" href="?act=/users">Huỷ</a>
     </form>
 </div>

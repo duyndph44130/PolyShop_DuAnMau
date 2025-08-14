@@ -7,7 +7,7 @@
     <form method="GET" action="">
         <input type="hidden" name="act" value="/users">
         <input type="text" name="keyword" placeholder="Tìm theo tên hoặc email..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
-        <button type="submit">Tìm kiếm</button>
+        <button class="btn" type="submit">Tìm kiếm</button>
     </form>
     <br>
 

@@ -24,7 +24,7 @@
         <textarea id="description" name="description"><?= htmlspecialchars($_POST['description'] ?? '') ?></textarea>
 
         <br><br>
-        <button type="submit">Thêm</button>
+        <button class="btn" type="submit">Thêm</button>
         <a class="btn" href="?act=/categories">Quay lại danh sách</a>
     </form>
 </div>

@@ -64,7 +64,7 @@
             </select>
         </label><br>
 
-        <button type="submit">Thêm</button>
+        <button class="btn" type="submit">Thêm</button>
     </form>
 
     <a class="btn" href="?act=/users">Quay lại</a>

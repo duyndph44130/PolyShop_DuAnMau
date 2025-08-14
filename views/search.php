@@ -1,37 +1,38 @@
 <?php include './views/layouts/header.php'; ?>
 <?php include './views/layouts/menu.php'; ?>
 
-<div class="container mx-auto px-4 py-6">
+<div class="container main-content search-page-container"> <!-- Thêm main-content và search-page-container -->
 
     <!-- KẾT QUẢ TÌM KIẾM -->
-    <main class="md:col-span-3">
-        <h2 class="text-xl font-bold mb-6">
+    <main class="search-results-main"> <!-- Đổi tên class -->
+        <h2 class="search-results-title">
             🔍 Kết quả tìm kiếm cho: 
-            <span class="text-blue-600">"<?= htmlspecialchars($keyword) ?>"</span>
+            <span class="search-keyword">"<?= htmlspecialchars($keyword) ?>"</span>
         </h2>
 
         <?php if (!empty($results)): ?>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="product-grid search-product-grid"> <!-- Thêm search-product-grid -->
                 <?php foreach ($results as $product): ?>
-                    <div class="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition">
+                    <div class="product-card search-product-card"> <!-- Thêm search-product-card -->
                         <a href="?act=/product/detail&id=<?= $product['product_id'] ?>">
-                            <img src="uploads/<?= htmlspecialchars($product['image_url']) ?>" 
+                            <img src="admin//<?= htmlspecialchars($product['image_url']) ?>" 
                                     alt="<?= htmlspecialchars($product['name']) ?>" 
-                                    class="w-full h-56 object-cover">
-                            <div class="p-3">
-                                <h3 class="text-sm font-semibold truncate">
+                                    class="product-image">
+                            <div class="product-card-content"> <!-- Thêm div bọc nội dung -->
+                                <h3 class="product-name">
                                     <?= htmlspecialchars($product['name']) ?>
                                 </h3>
-                                <p class="text-blue-600 font-bold mt-1">
+                                <p class="product-price">
                                     <?= number_format($product['price'], 0, ',', '.') ?>₫
                                 </p>
+                                <a href="?act=/product/detail&id=<?= $product['product_id'] ?>" class="btn-view btn-primary">Xem chi tiết</a>
                             </div>
                         </a>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="text-gray-600">
+            <p class="no-product empty-message">
                 Không tìm thấy sản phẩm nào phù hợp với từ khóa 
                 "<strong><?= htmlspecialchars($keyword) ?></strong>".
             </p>

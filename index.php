@@ -18,9 +18,9 @@ if (!$conn) {
 require_once './models/ProductModel.php';
 require_once './models/CategoryModel.php';
 require_once './models/UserModel.php';
-require_once './models/OrderModel.php'; // Đã cập nhật
-require_once './models/VoucherModel.php'; // Đã cập nhật
-require_once './models/ShippinginfoModel.php'; // Đã cập nhật
+require_once './models/OrderModel.php';
+require_once './models/VoucherModel.php';
+require_once './models/ShippinginfoModel.php';
 require_once './models/CommentModel.php';
 require_once './models/ContactModel.php';
 require_once './models/CartModel.php';
@@ -50,14 +50,16 @@ match ($act) {
     '/search', 'search' => (new SearchController())->search(),
     '/shop', 'shop' => (new ShopController())->shop(),
     '/blog', 'blog' => (new HomeController)->blog(),
+    '/order/detail', 'order/detail' => (new OrderController)->orderDetail(),
 
-    '/cart', 'cart' => (new CartController())->cart(),
+    '/cart', 'cart' => (new CartController())->viewCart(),
     '/cart/add', 'cart/add' => (new CartController())->add(),
     '/cart/remove', 'cart/remove' => (new CartController())->remove(),
-    '/cart/update', 'cart/update' => (new CartController())->update(),
+    '/cart/update', 'cart/update' => (new CartController())->updateQty(),
 
-    // '/checkout', 'checkout' => (new CheckoutController())->checkout(), // Thêm route cho trang thanh toán
-    // '/thankyou', 'thankyou' => (new CheckoutController())->thankYou(), // Thêm route cho trang cảm ơn
+    '/checkout', 'checkout' => (new CheckoutController())->checkout(),
+    '/checkout/place', 'checkout/place' => (new CheckoutController())->placeOrder(),
+    '/thankyou', 'thankyou' => (new CheckoutController())->thankYou(),
 
     // '/order/track' => (new OrderController())->track(), // Nếu bạn muốn thêm chức năng theo dõi đơn hàng
 
@@ -71,6 +73,11 @@ match ($act) {
     '/login', 'login' => (new AuthController())->login(),
     '/logout', 'logout' => (new AuthController())->logout(),
     '/register', 'register' => (new AuthController())->register(),
+
+    '/account/profile', 'account/profile' => (new UserController())->profile(),
+    '/account/editProfile', 'account/editProfile' => (new UserController())->editProfile(),
+    '/account/updateProfile', 'account/updateProfile' => (new UserController())->updateProfile(),
+    '/account/orders', 'account/orders' => (new OrderController())->orderHistory(),
 
     default => http_response_code(404),
 };

@@ -38,7 +38,7 @@
             <option value="Đang xử lý" <?= ($contact['status'] ?? '') === 'Đang xử lý' ? 'selected' : '' ?>>Đang xử lý</option>
             <option value="Đã xử lý" <?= ($contact['status'] ?? '') === 'Đã xử lý' ? 'selected' : '' ?>>Đã xử lý</option>
         </select>
-        <button type="submit" class="btn">Cập nhật</button>
+        <button class="btn" type="submit" class="btn">Cập nhật</button>
     </form>
 
     <a href="?act=/contacts" class="btn">← Quay lại danh sách</a>

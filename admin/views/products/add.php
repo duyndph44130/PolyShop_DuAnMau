@@ -64,7 +64,7 @@
 
 
         <br>
-        <button type="submit">Thêm</button>
+        <button class="btn" type="submit">Thêm</button>
         <a class="btn" href="?act=/products">Hủy</a>
     </form>
 

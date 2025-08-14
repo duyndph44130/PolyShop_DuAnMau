@@ -31,25 +31,27 @@ class AuthController {
                 $user = $this->userModel->findByEmail($email);
 
                 if ($user && password_verify($password, $user['password'])) {
-                    // Lưu thông tin user vào session
-                    $_SESSION['user'] = $user;
+                    // Lưu thông tin vào session
+                    $_SESSION['user_id'] = $user['user_id']; // Để kiểm tra đăng nhập
+                    $_SESSION['user']    = $user;            // Thông tin đầy đủ
 
                     // Điều hướng theo role
                     if ($user['role'] === 'client') {
-                        header('Location: /PolyShop_DuAnMau/?act=/home'); // hoặc chỉ /PolyShop_DuAnMau nếu index.php mặc định
+                        $_SESSION['success'] = "Đăng nhập thành công!";
+                        header('Location: /PolyShop_DuAnMau/?act=/home');
                         exit;
                     } elseif ($user['role'] === 'admin') {
-                        header('Location: /PolyShop_DuAnMau/admin/?act=/dashboard'); // Chuyển đến trang admin mặc định (index.php)
+                        $_SESSION['success'] = "Đăng nhập thành công!";
+                        header('Location: /PolyShop_DuAnMau/admin/?act=/dashboard');
                         exit;
                     } else {
-                        // Role không hợp lệ → đăng xuất
                         session_destroy();
                         $errors['general'] = "Tài khoản không có quyền truy cập.";
                         require_once './views/login.php';
                         return;
                     }
                 } else {
-                    $errors['general'] = "Email hoặc mật khẩu không đúng.";
+                    $_SESSION['error'] = "Sai email hoặc mật khẩu!";
                 }
             }
         }
@@ -105,9 +107,10 @@ class AuthController {
             }
 
             // Nếu không có lỗi → lưu user mới
-            if (empty($errors)) {
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                if ($this->userModel->create($name, $email, $hashedPassword, $phone, $address, $role)) {
+                if (empty($errors)) {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    if ($this->userModel->create($name, $email, $hashedPassword, $phone, $address, $role)) {
+                    $_SESSION['success'] = "Đăng ký thành công! Vui lòng đăng nhập.";
                     header("Location: ?act=/login");
                     exit;
                 } else {
@@ -121,7 +124,9 @@ class AuthController {
 
     // Đăng xuất
     public function logout() {
-        session_destroy();
+        // session_destroy();
+        unset($_SESSION['user']);
+        $_SESSION['success'] = "Đăng xuất thành công!";
         header('Location: ?act=/login');
         exit;
     }
