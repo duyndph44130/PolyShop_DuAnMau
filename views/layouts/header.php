@@ -33,8 +33,8 @@ if ($isLoggedIn) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/main.css"> <!-- Đảm bảo dòng này có mặt và sau style.css -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/main.css"> <!-- Đảm bảo dòng này có mặt và sau style.css -->
     <script defer src="../assets/js/main.js"></script>
 
 </head>

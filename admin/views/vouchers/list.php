@@ -16,10 +16,10 @@
         <p>Đã tìm thấy <?= count($listVouchers) ?> kết quả cho từ khóa: <strong><?= htmlspecialchars($keyword) ?></strong></p>
     <?php endif; ?>
 
-    <a class="btn" href="?act=/voucher/add">+ Thêm mới voucher</a>
+    <a class="btn mb-2" href="?act=/voucher/add">+ Thêm mới voucher</a>
 
     <table border="1" cellspacing="0" cellpadding="8">
-        <tr>
+        <tr style="background-color: #007bff; color: white;">
             <th>ID</th>
             <th>Mã</th>
             <th>Giảm (%)</th>

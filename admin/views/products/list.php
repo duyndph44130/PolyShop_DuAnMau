@@ -16,7 +16,7 @@
         <p>🔍 Tìm thấy <?= count($listProducts) ?> kết quả cho từ khóa "<strong><?= htmlspecialchars($keyword) ?></strong>"</p>
     <?php endif; ?>
 
-    <a class="btn" href="?act=/product/add">Thêm sản phẩm</a>
+    <a class="btn mb-2" href="?act=/product/add">Thêm sản phẩm</a>
 
     <table border="1" >
         <thead>
@@ -47,8 +47,8 @@
                             <?php endif; ?>
                         </td>
                         <td class="acts">
-                            <a href="?act=/product/detail&id=<?= $product['product_id'] ?>">Chi tiết</a>
-                            <a href="?act=/product/edit&id=<?= $product['product_id'] ?>">Sửa</a>
+                            <a href="?act=/product/detail&id=<?= $product['product_id'] ?>">Chi tiết</a>|
+                            <a href="?act=/product/edit&id=<?= $product['product_id'] ?>">Sửa</a>|
                             <a href="?act=/product/delete&id=<?= $product['product_id'] ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                         </td>
                     </tr>

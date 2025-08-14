@@ -15,7 +15,7 @@
         <p>Đã tìm thấy <?= count($listUsers) ?> kết quả cho từ khóa: <strong><?= htmlspecialchars($keyword) ?></strong></p>
     <?php endif; ?>
 
-    <a class="btn" href="?act=/user/add">Thêm người dùng</a>
+    <a class="btn mb-2" href="?act=/user/add">Thêm người dùng</a>
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
@@ -39,8 +39,8 @@
                         <td><?= htmlspecialchars($user['phone']) ?></td>
                         <td><?= htmlspecialchars($user['role']) ?></td>
                         <td>
-                            <a href="?act=/user/detail&id=<?= $user['user_id'] ?>">Xem</a>
-                            <a href="?act=/user/edit&id=<?= $user['user_id'] ?>">Sửa</a>
+                            <a href="?act=/user/detail&id=<?= $user['user_id'] ?>">Xem</a> |
+                            <a href="?act=/user/edit&id=<?= $user['user_id'] ?>">Sửa</a> |
                             <a href="?act=/user/delete&id=<?= $user['user_id'] ?> " onclick="return confirm('Bạn có chắc chắn muốn xoá người dùng này chứ?')">Xoá</a>
                         </td>
                     </tr>

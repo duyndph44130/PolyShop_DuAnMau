@@ -6,7 +6,7 @@
     </div> <!-- Kết thúc main-content -->
     </div> <!-- Kết thúc wrapper -->
     <!-- Custom Admin JS -->
-    <script src="/PolyShop_DuAnMau/assets/js/admin.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/admin.js"></script>
     </body>
     </html>
     

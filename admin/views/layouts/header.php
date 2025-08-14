@@ -11,7 +11,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
         <!-- Custom Admin CSS -->
-        <link rel="stylesheet" href="/PolyShop_DuAnMau/admin/assets/css/admin.css">
+        <link rel="stylesheet" href="<?= BASE_URL ?>admin/assets/css/admin.css">
         <!-- Thêm class 'auth-page' cho body nếu là trang đăng nhập/đăng ký -->
         <!-- ✅ Tailwind CSS -->
         <script src="https://cdn.tailwindcss.com"></script>

@@ -18,7 +18,7 @@
     <?php endif; ?>
 
     <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-        <tr style="background-color: #f4f4f4;">
+        <tr style="background-color: #007bff; color: white;">
             <th>ID</th>
             <th>Khách hàng</th>
             <th>Người nhận</th>
