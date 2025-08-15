@@ -17,6 +17,14 @@ class CheckoutController {
         $items = $this->cartModel->getCartItems($cart['order_id']);
         $total = $this->cartModel->calculateTotal($cart['order_id']);
 
+        // Áp dụng voucher nếu có
+        $discount = 0;
+        if (!empty($_SESSION['voucher'])) {
+            $discount = $_SESSION['voucher']['discount'];
+            $total -= $discount;
+            if ($total < 0) $total = 0;
+        }
+
         include './views/checkout.php';
     }
 
@@ -35,28 +43,46 @@ class CheckoutController {
         if (strlen($receiver_name) < 3) {
             $errors['receiver_name'] = "Họ tên người nhận phải có ít nhất 3 ký tự.";
         }
-
         if (!preg_match('/^[0-9]{9,11}$/', $receiver_phone)) {
             $errors['receiver_phone'] = "Số điện thoại không hợp lệ (9-11 chữ số).";
         }
-
         if (strlen($receiver_address) < 5) {
             $errors['receiver_address'] = "Địa chỉ giao hàng phải có ít nhất 5 ký tự.";
         }
 
-        // Nếu có lỗi → quay lại form
         if (!empty($errors)) {
             $cart = $this->cartModel->getCart($userId);
             $items = $this->cartModel->getCartItems($cart['order_id']);
             $total = $this->cartModel->calculateTotal($cart['order_id']);
+
+            // Áp dụng voucher nếu có
+            $discount = 0;
+            if (!empty($_SESSION['voucher'])) {
+                $discount = $_SESSION['voucher']['discount'];
+                $total -= $discount;
+                if ($total < 0) $total = 0;
+            }
+
             include './views/checkout.php';
             return;
         }
 
         // Lấy đơn hàng hiện tại (giỏ hàng)
         $cart = $this->cartModel->getCart($userId);
+        $total = $this->cartModel->calculateTotal($cart['order_id']);
 
-        // Tạo shipping info gắn trực tiếp vào order
+        // Áp dụng voucher nếu có
+        $discount = 0;
+        if (!empty($_SESSION['voucher'])) {
+            $discount = $_SESSION['voucher']['discount'];
+            $total -= $discount;
+            if ($total < 0) $total = 0;
+        }
+
+        // Cập nhật tổng tiền trong bảng orders
+        $this->cartModel->updateTotal($cart['order_id'], $total);
+
+        // Tạo shipping info
         $this->shippingModel->create([
             'order_id' => $cart['order_id'],
             'recipient_name' => $receiver_name,
@@ -68,7 +94,10 @@ class CheckoutController {
         // Cập nhật trạng thái đơn hàng sang 'pending'
         $this->cartModel->updateStatus($cart['order_id'], 'pending');
 
+        // Xóa voucher sau khi đặt hàng
+        unset($_SESSION['voucher']);
         unset($_SESSION['cart']);
+
         $_SESSION['success'] = "Thanh toán thành công!";
         header("Location: ?act=/thankyou");
         exit;

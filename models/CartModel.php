@@ -111,4 +111,14 @@ class CartModel {
             'order_id' => $orderId
         ]);
     }
+
+    public function updateTotal($orderId, $total)
+    {
+        $sql = "UPDATE orders SET total_amount = :total WHERE order_id = :order_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':total', $total, PDO::PARAM_INT);
+        $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
 }

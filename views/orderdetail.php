@@ -23,7 +23,12 @@
         $statusLabel = $statusMap[$order['status']] ?? $order['status'];
         ?>
         <p><strong>Trạng thái:</strong> <span class="order-status status-<?= $order['status'] ?>"><?= htmlspecialchars($statusLabel) ?></span></p>
-        <p><strong>Tổng tiền:</strong> <span class="order-total-amount"><?= number_format($order['total_amount']) ?>₫</span></p>
+        <p><strong>Tạm tính:</strong> <?= number_format($tam_tinh) ?>₫</p>
+        <?php if ($discount_amount > 0): ?>
+            <p><strong>Giảm giá:</strong> -<?= number_format($discount_amount) ?>₫</p>
+        <?php endif; ?>
+        <p><strong>Tổng tiền:</strong> <?= number_format($tong_cong) ?>₫</p>
+        <p><strong>Tổng tiền sau giảm:</strong> <span class="order-total-amount"><?= number_format($order['total_amount']) ?>₫</span></p>
     </div>
 
     <!-- Danh sách sản phẩm -->

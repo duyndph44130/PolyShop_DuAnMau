@@ -17,17 +17,44 @@ class OrderController {
         require './views/orderhistory.php';
     }
 
-    public function orderDetail() {
-        if (empty($_GET['id'])) {
-            header("Location: ?act=/account/orders");
-            exit;
+public function orderDetail() {
+    if (empty($_GET['id'])) {
+        header("Location: ?act=/account/orders");
+        exit;
+    }
+
+    $orderId = (int) $_GET['id'];
+    $order = $this->orderModel->getOrderById($orderId);
+    $items = $this->orderModel->getOrderItems($orderId);
+
+    // ====== TÍNH TỔNG & GIẢM GIÁ ======
+    $tam_tinh = 0;
+    foreach ($items as $item) {
+        $tam_tinh += $item['price'] * $item['quantity'];
+    }
+
+    $discount_amount = 0;
+    if (!empty($_SESSION['voucher'])) {
+        $voucher = $_SESSION['voucher'];
+
+        if (!empty($voucher['discount_percent'])) {
+            $discount_amount = $tam_tinh * ($voucher['discount_percent'] / 100);
         }
 
-        $orderId = (int) $_GET['id'];
-        $order = $this->orderModel->getOrderById($orderId);
-        $items = $this->orderModel->getOrderItems($orderId);
+        if (!empty($voucher['discount_value'])) {
+            $discount_amount = $voucher['discount_value'];
+        }
 
-        require './views/orderdetail.php';
+        if (!empty($voucher['max_discount']) && $discount_amount > $voucher['max_discount']) {
+            $discount_amount = $voucher['max_discount'];
+        }
     }
+
+    $tong_cong = $tam_tinh - $discount_amount;
+
+    // Truyền dữ liệu sang view
+    require './views/orderdetail.php';
+}
+
 
 }

@@ -79,12 +79,21 @@
             <div class="checkout-summary">
                 <div class="checkout-summary-row">
                     <span>Tạm tính:</span>
-                    <span><?= number_format($total) ?>₫</span>
+                    <span><?= number_format($total + ($discount ?? 0)) ?>₫</span>
                 </div>
+
+                <?php if (!empty($_SESSION['voucher'])): ?>
+                <div class="checkout-summary-row">
+                    <span>Giảm giá (<?= htmlspecialchars($_SESSION['voucher']['code']) ?>):</span>
+                    <span>-<?= number_format($_SESSION['voucher']['discount']) ?>₫</span>
+                </div>
+                <?php endif; ?>
+
                 <div class="checkout-summary-row">
                     <span>Phí giao hàng:</span>
                     <span>35.000₫</span>
                 </div>
+
                 <div class="checkout-summary-row total">
                     <span>Tổng cộng:</span>
                     <span><?= number_format($total + 35000) ?>₫</span>

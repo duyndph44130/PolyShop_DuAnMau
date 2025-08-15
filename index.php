@@ -56,6 +56,7 @@ match ($act) {
     '/cart/add', 'cart/add' => (new CartController())->add(),
     '/cart/remove', 'cart/remove' => (new CartController())->remove(),
     '/cart/update', 'cart/update' => (new CartController())->updateQty(),
+    '/cart/applyVoucher', 'cart/applyVoucher' => (new CartController())->applyVoucher(),
 
     '/checkout', 'checkout' => (new CheckoutController())->checkout(),
     '/checkout/place', 'checkout/place' => (new CheckoutController())->placeOrder(),

@@ -1,51 +1,38 @@
 <?php
 class VoucherModel
 {
-    protected $conn;
+    private $conn;
 
     public function __construct()
     {
-        global $conn;
-        $this->conn = $conn;
+        $this->conn = connectDB();
     }
 
-    /**
-     * Lấy voucher áp dụng cho sản phẩm cụ thể nếu đang còn hạn sử dụng
-     */
-    public function getVoucherForProduct($productId)
+    public function getVoucherByCode($code)
     {
-        try {
-            $sql = "SELECT * FROM voucher 
-                    WHERE (product_id = :pid OR product_id IS NULL)
-                    AND start_date <= CURDATE()
-                    AND end_date >= CURDATE()
-                    ORDER BY discount_value DESC
-                    LIMIT 1";
-
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':pid', $productId, PDO::PARAM_INT);
-            $stmt->execute();
-
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Lỗi khi lấy voucher: " . $e->getMessage();
-            return null;
-        }
+        $sql = "SELECT * FROM voucher WHERE name = :code AND NOW() BETWEEN start_date AND end_date";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':code', $code);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * (Tuỳ chọn) Lấy tất cả các voucher đang hoạt động
-     */
-    public function getAllActiveVouchers()
+    public function getVoucherForProduct($product_id)
     {
-        try {
-            $sql = "SELECT * FROM voucher WHERE NOW() BETWEEN start_date AND end_date ORDER BY start_date DESC";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Lỗi khi lấy danh sách voucher: " . $e->getMessage();
-            return [];
-        }
+        $sql = "SELECT * FROM voucher WHERE (product_id IS NULL OR product_id = :product_id) AND NOW() BETWEEN start_date AND end_date";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':product_id', $product_id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getByName($name)
+    {
+        $sql = "SELECT * FROM voucher WHERE name = :name";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+?>
